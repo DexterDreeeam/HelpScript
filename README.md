@@ -1,35 +1,31 @@
 # HelpScript
 
 ```
-RemoveSoftware "DevHome"
-RemoveSoftware "GetHelp"
-RemoveSoftware "YourPhone"
+$toUninstall = @(
+    "DevHome",
+    "GetHelp",
+    "YourPhone"
+}
 
-function RemoveSoftware($name, $displayName=$name){
-    # Ask user if they wants to remove the application(s) matching a name if it is
-    # installed and removable. $displayName is shown to the user. $name is used to
-    # match the application(s) to remove.
+function RemoveSoftware($name, $displayName=$name) {
     $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Inquire
     $t = Get-AppxPackage *$name*
     $nonRemovable =  $t|Where-Object{$_.NonRemovable -eq $True}
     $t =  $t|Where-Object{$_.NonRemovable -eq $False}
     $r = 0
     $n = $t.length
-    if ($nonRemovable.length -gt 0){
+    if ($nonRemovable.length -gt 0) {
         $nr_name = ($nonRemovable.Name -join ', ')
         log "[NoRM] - Packages $nr_name cannot be removed."
-        if ($n -eq 0 ){
+        if ($n -eq 0 ) {
             return ($nonRemovable.length * -1)
         }
     }
-    if ( $n -eq 1 ){ 
-        ## PROMPT TO REMOVE ONE PACKAGE ##
+    if ( $n -eq 1 ) { 
         $pkg = $t.name
         log "[one ] - Package $pkg installed."
         $r = $wshell.Popup("Uninstall $displayName : $pkg ?", 0, "Remove 1 Package", 32 + 4)
-
-    } elseif ($n -gt 1){        
-        ## PROMPT TO REMOVE MANY PACKAGES ##
+    } elseif ($n -gt 1) {        
         log "[many] - $n package for *$name*."
         $list = ($t.name -join ", ")
         $r = $wshell.Popup("Uninstall $displayName ($n): $list ?", 0, "Remove $n Package", 32 + 4)
@@ -38,21 +34,22 @@ function RemoveSoftware($name, $displayName=$name){
         return
     }
 
-    if (($r -eq 6)){
-        # REMOVE PACKAGE IF USER ACCEPTED ##
+    if (($r -eq 6)) {
         $t | Remove-AppxPackage
-        if ($? -eq $False){
-            # If an error happened during deinstallation warn user
+        if ($? -eq $False) {
             log "[ERR ] Package $displayName not removed."
             $wshell.Popup("Impossible to remove $displayName.", 1, "Remove Software", 48)
             return 0
         }
         log "[DEL ] Package $displayName removed."
-        # $wshell.Popup("$displayName Uninstalled.", 1, "Remove Software", 64)
         infoPopup("$displayName Uninstalled.")
         return $n
     }
     log "[skip] Skipping $displayName..."
     return
+}
+
+foreach ($appx in $toUninstall) {
+    RemoveSoftware $appx
 }
 ```
