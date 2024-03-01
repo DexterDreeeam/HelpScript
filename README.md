@@ -6,6 +6,15 @@ $uninstalls += "DevHome"
 $uninstalls += "GetHelp"
 $uninstalls += "YourPhone"
 
+function log($msg = "") {
+    Write-Output $msg;
+}
+
+function infoPopup($message, $timeout=1, $icon=64){
+    $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Inquire
+    return $wshell.Popup($message, $timeout, "Info", $icon + 0)
+}
+
 function RemoveSoftware($name, $displayName=$name) {
     $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Inquire
     $t = Get-AppxPackage *$name*
