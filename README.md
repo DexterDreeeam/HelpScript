@@ -1,11 +1,10 @@
 # HelpScript
 
 ```
-$toUninstall = @(
-    "DevHome",
-    "GetHelp",
-    "YourPhone"
-}
+$uninstalls = @()
+$uninstalls += "DevHome"
+$uninstalls += "GetHelp"
+$uninstalls += "YourPhone"
 
 function RemoveSoftware($name, $displayName=$name) {
     $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Inquire
@@ -49,7 +48,7 @@ function RemoveSoftware($name, $displayName=$name) {
     return
 }
 
-foreach ($appx in $toUninstall) {
+foreach ($appx in $uninstalls) {
     RemoveSoftware $appx
 }
 ```
