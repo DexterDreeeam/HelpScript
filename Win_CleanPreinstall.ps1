@@ -6,6 +6,7 @@ $uninstalls += "549981C3F5F10" # Cortana
 $uninstalls += "BingNews"
 $uninstalls += "BingWeather"
 $uninstalls += "Clipchamp.Clipchamp"
+$uninstalls += "CloudExperienceHost"
 $uninstalls += "DevHome"
 $uninstalls += "GetHelp"
 $uninstalls += "MicrosoftSolitaireCollection"
