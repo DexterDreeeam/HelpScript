@@ -1,4 +1,5 @@
 $uninstalls = @()
+$uninstalls += "549981C3F5F10" # Cortana
 $uninstalls += "BingNews"
 $uninstalls += "BingWeather"
 $uninstalls += "Clipchamp.Clipchamp"
@@ -7,6 +8,7 @@ $uninstalls += "GetHelp"
 $uninstalls += "MicrosoftSolitaireCollection"
 $uninstalls += "Microsoft.People"
 $uninstalls += "Microsoft.Todos"
+$uninstalls += "OneDrive"
 $uninstalls += "PowerAutomateDesktop"
 $uninstalls += "QuickAssist"
 $uninstalls += "ScreenSketch"
@@ -16,6 +18,7 @@ $uninstalls += "windowscommunicationsapps"
 $uninstalls += "WindowsFeedbackHub"
 $uninstalls += "WindowsMaps"
 $uninstalls += "YourPhone"
+$uninstalls += "ZuneMusic"
 $uninstalls += "ZuneVideo"
 
 function log($msg = "") {
@@ -29,9 +32,9 @@ function infoPopup($message, $timeout=1, $icon=64){
 
 function RemoveSoftware($name, $displayName=$name) {
     $wshell = New-Object -ComObject Wscript.Shell -ErrorAction Inquire
-    $t = Get-AppxPackage *$name*
-    $nonRemovable =  $t|Where-Object{$_.NonRemovable -eq $True}
-    $t =  $t|Where-Object{$_.NonRemovable -eq $False}
+    $t = Get-AppxPackage -AllUsers *$name*
+    $nonRemovable =  $t | Where-Object{$_.NonRemovable -eq $True}
+    $t =  $t | Where-Object{$_.NonRemovable -eq $False}
     $r = 0
     $n = $t.length
     if ($nonRemovable.length -gt 0) {
@@ -55,7 +58,7 @@ function RemoveSoftware($name, $displayName=$name) {
     }
 
     if (($r -eq 6)) {
-        $t | Remove-AppxPackage
+        $t | Remove-AppxPackage -AllUsers
         if ($? -eq $False) {
             log "[ERR ] Package $displayName not removed."
             $wshell.Popup("Impossible to remove $displayName.", 1, "Remove Software", 48)
