@@ -1,3 +1,6 @@
+# query
+# Get-AppxPackage -AllUsers | Select-Object -ExpandProperty Name
+
 $uninstalls = @()
 $uninstalls += "549981C3F5F10" # Cortana
 $uninstalls += "BingNews"
