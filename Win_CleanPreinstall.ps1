@@ -9,11 +9,14 @@ $uninstalls += "Microsoft.People"
 $uninstalls += "Microsoft.Todos"
 $uninstalls += "PowerAutomateDesktop"
 $uninstalls += "QuickAssist"
+$uninstalls += "ScreenSketch"
 $uninstalls += "StickyNotes"
 $uninstalls += "WindowsCamera"
+$uninstalls += "windowscommunicationsapps"
 $uninstalls += "WindowsFeedbackHub"
 $uninstalls += "WindowsMaps"
 $uninstalls += "YourPhone"
+$uninstalls += "ZuneVideo"
 
 function log($msg = "") {
     Write-Output $msg;
