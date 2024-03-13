@@ -94,3 +94,7 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" 
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarModeCache" -Type "DWord" -Value 1
 
 winget install Microsoft.PowerToys
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"

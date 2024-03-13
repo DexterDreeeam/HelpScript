@@ -23,3 +23,7 @@ if ($choice -eq "1") {
     Write-Output "Installing Git version $choice..."
     winget install --id Git.Git -e --source winget --version $choice
 }
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"

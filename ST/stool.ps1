@@ -30,3 +30,7 @@ while (-not (ValidStoolExist)) {
   Start-Sleep -Seconds 3
   Rename-Item -Path $binPath -NewName $stoolPath
 }
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"

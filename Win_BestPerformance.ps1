@@ -84,3 +84,7 @@ $out | Out-File -FilePath "$Env:TEMP\AdjustForBestPerformanceVisual.reg" -Force 
 Invoke-Command { reg import "$Env:TEMP\AdjustForBestPerformanceVisual.reg" *>&1 | Out-Null }
 # Must restart the Themes service
 Restart-Service Themes -Force
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"

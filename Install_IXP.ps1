@@ -8,3 +8,7 @@ if ( $sig.Status -eq 'Valid' ) {
 } else {
   Write-Error "Failed to validate signature: $($sig.Status)"
 }
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"

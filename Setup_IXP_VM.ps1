@@ -70,3 +70,7 @@ New-TestMachine `
   -VmNumProcessors 8 -VmMemInGb 8 `
   -SavePath $vhdPath `
   -Latest
+
+# Delete Self
+$myPsPath = $MyInvocation.MyCommand.Path
+Start-Process powershell -ArgumentList "Remove-Item `"$myPsPath`" -Force"
