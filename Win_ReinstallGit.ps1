@@ -1,9 +1,9 @@
-$options = @("  1) Git with VFS", "  2) Latest Git")
+$options = @("Git with VFS", "Latest Git")
 Write-Host "Choose an option:"
 for ($i=0; $i -lt $options.Count; $i++) {
-    Write-Host "$($i+1). $($options[$i])"
+    Write-Host "  $($i+1). $($options[$i])"
 }
-$choice = Read-Host "Enter 1 or 2 or Specific Git Version: "
+$choice = Read-Host "Enter 1 or 2 or Specific Git Version"
 
 $uninstaller = Get-ChildItem "C:\Program Files\Git\unins*.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
 if ($uninstaller) {
