@@ -10,6 +10,10 @@ $version = $args[0]
 if ($version) {
     Write-Output "Installing Git version $version..."
     winget install --id Git.Git -e --source winget --version $version
+} elseif ($version -eq "vfs") {
+    Write-Output "Installing VFS Git ..."
+    winget install --id Microsoft.Git
+    winget install --id Microsoft.VFSforGit
 } else {
     Write-Output "Installing latest Git version..."
     winget install --id Git.Git -e --source winget
