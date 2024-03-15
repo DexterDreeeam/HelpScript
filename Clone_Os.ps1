@@ -2,6 +2,9 @@ Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 $dst = $args[0]
 $repoCacheServer = $null
+$vfsendpoint = "https://osgvfsserver.corp.microsoft.com"
+$os2020entry = "0d54b6ef" + "-" + "7283" + "-" + "444f" + "-" + "847a" + "-" + "343728d58a4d"
+$osentry = "7bc5fd9f" + "-" + "6098" + "-" + "479a" + "-" + "a87e" + "-" + "1533d288d438"
 
 while ($true) {
     $options = @("os.2020", "os", "OSClient", "XS.SDX.Settings")
@@ -12,10 +15,10 @@ while ($true) {
     $choice = Read-Host "Enter which Repo you want to clone"
     if ($choice -eq "1") {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os.2020"
-        $repoCacheServer = "https://osgvfsserver.corp.microsoft.com/0d54b6ef-7283-444f-847a-343728d58a4d"
+        $repoCacheServer = $vfsendpoint + "/" + $os2020entry
     } elseif ($choice -eq "2") {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os"
-        $repoCacheServer = "https://osgvfsserver.corp.microsoft.com/7bc5fd9f-6098-479a-a87e-1533d288d438"
+        $repoCacheServer = $vfsendpoint + "/" + $osentry
     } elseif ($choice -eq "3") {
         $repo = "https://microsoft.visualstudio.com/DefaultCollection/OS/_git/OSClient"
     } elseif ($choice -eq "4") {
