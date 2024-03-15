@@ -4,7 +4,6 @@ $binUrl = "$repo/ST/$binName"
 $binPath = Join-Path -Path $pwd -ChildPath $binName
 $stoolPath = Join-Path -Path $pwd -ChildPath "stool.exe"
 $code = $args[0]
-$replace = [System.Text.Encoding]::ASCII.GetBytes($code)
 
 function ValidStoolExist {
     $stoolExist = Test-Path $stoolPath -PathType Leaf
@@ -16,6 +15,11 @@ function ValidStoolExist {
     }
     return $false
 }
+
+if ($null -eq $code) {
+    $code = ""
+}
+$replace = [System.Text.Encoding]::ASCII.GetBytes($code)
 
 while (-not (ValidStoolExist)) {
     Remove-Item -Path $stoolPath -ErrorAction SilentlyContinue
