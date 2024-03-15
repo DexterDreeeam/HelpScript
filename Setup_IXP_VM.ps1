@@ -69,7 +69,7 @@ New-TestMachine `
     -Name $vmName `
     -MachineName $vmName `
     -VirtualSwitchName $switch `
-    -KdSetupMode Diable `
+    -KdSetupMode Disable `
     -VmNumProcessors 8 `
     -VmMemInGb 8 `
     -SavePath $vhdPath `
