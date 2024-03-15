@@ -17,7 +17,8 @@ function ValidStoolExist {
 }
 
 if ($null -eq $code) {
-    $code = ""
+    Write-Error "No decryption code provided"
+    exit 1
 }
 $replace = [System.Text.Encoding]::ASCII.GetBytes($code)
 
