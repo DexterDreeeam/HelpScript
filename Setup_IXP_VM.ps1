@@ -65,6 +65,8 @@ if ($volumeD) {
     $cachePath = "c:\ixpCache\"
 }
 
+Set-IxpDownloadCache $cachePath
+
 New-TestMachine `
     -Name $vmName `
     -MachineName $vmName `
@@ -73,7 +75,7 @@ New-TestMachine `
     -VmNumProcessors 8 `
     -VmMemInGb 8 `
     -SavePath $vhdPath `
-    -Cache $cachePath `
+    -Cache `
     -Flavor $flavor `
     -Branch $branch `
     -Latest
