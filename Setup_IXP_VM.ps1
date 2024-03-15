@@ -59,17 +59,24 @@ Write-Host "Use Switch: $switch"
 $volumeD = Get-Volume -DriveLetter D -ErrorAction SilentlyContinue
 if ($volumeD) {
     $vhdPath = "d:\vhd\"
+    $cachePath = "d:\ixpCache\"
 } else {
     $vhdPath = "c:\vhd\"
+    $cachePath = "c:\ixpCache\"
 }
 
 New-TestMachine `
-  -Name $vmName -MachineName $vmName `
-  -VirtualSwitchName $switch `
-  -Flavor $flavor -Branch $branch `
-  -VmNumProcessors 8 -VmMemInGb 8 `
-  -SavePath $vhdPath `
-  -Latest
+    -Name $vmName `
+    -MachineName $vmName `
+    -VirtualSwitchName $switch `
+    -KdSetupMode Diable `
+    -VmNumProcessors 8 `
+    -VmMemInGb 8 `
+    -SavePath $vhdPath `
+    -Cache $cachePath `
+    -Flavor $flavor `
+    -Branch $branch `
+    -Latest
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
