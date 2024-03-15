@@ -36,8 +36,10 @@ if ($null -ne $repoCacheServer) {
 
 if ($international) {
     gvfs clone $repo $dst --cache-server-url $repoCacheServer
-} else {
+} elseif ($null -ne $repoCacheServer) {
     gvfs clone $repo $dst
+} else {
+    git $repo $dst
 }
 
 # Delete Self
