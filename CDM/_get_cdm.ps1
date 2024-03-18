@@ -1,5 +1,5 @@
 $repo = "https://raw.githubusercontent.com/dexterdreeeam/HelpScript/main/"
-$cdUrl = "$repo/CD/_run_cd.ps1"
+$cdUrl = "$repo/CDM/_run_cdm.ps1"
 $cdPath = Join-Path -Path $pwd -ChildPath "_run_cd.ps1"
 
 $cdExist = Test-Path $cdPath -PathType Leaf
