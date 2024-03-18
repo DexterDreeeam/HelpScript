@@ -9,7 +9,7 @@ if ($choice -eq "1") {
     $cdmFolder = [System.Environment]::GetFolderPath('UserProfile')
     $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "AppData\Local\Packages"
     $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy"
-    $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "LocalState\ContentManagementSDK\Creatives\ADUNITID"
+    $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "LocalState\ContentManagementSDK\Creatives"
     Invoke-Item $cdmFolder
 }
 
