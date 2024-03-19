@@ -9,7 +9,7 @@ function RunPowershell($scriptFilePathAndArguments) {
     Start-Process -FilePath Powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Unrestricted -NoProfile -File ""$scriptFilePathAndArguments"" -PauseOnCompletion"
 }
 
-function ElevateLevel($scriptFilePathAndArguments)
+function ElevateLevel()
 {
     $currentIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent();
     $currentPrincipal = New-Object System.Security.Principal.WindowsPrincipal($currentIdentity);
@@ -19,12 +19,12 @@ function ElevateLevel($scriptFilePathAndArguments)
     {
         Write-Host -ForegroundColor Cyan "This script requires administrator privileges. Elevating..."
         Write-Host -ForegroundColor Cyan "$scriptFilePathAndArguments"
-        RunPowershell $scriptFilePathAndArguments
+        RunPowershell $MyInvocation.MyCommand.Path
         exit
     }
 }
 
-ElevateLevel $MyInvocation.MyCommand.Path
+ElevateLevel
 
 $repo = "https://raw.githubusercontent.com/dexterdreeeam/HelpScript/main/"
 $cdUrl = "$repo/CDM/_run_cdm.ps1"
