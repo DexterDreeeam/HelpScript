@@ -31,5 +31,6 @@ try {
     }
 } catch {
     Write-Error "An exception occurred: $_.Exception.Message"
+    Read-Host -Prompt "Press Enter to exit"
 }
 
