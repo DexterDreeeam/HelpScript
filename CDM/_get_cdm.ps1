@@ -11,7 +11,7 @@ function RemoveFile($path) {
 
 $repo = "https://raw.githubusercontent.com/dexterdreeeam/HelpScript/main/"
 $cdUrl = "$repo/CDM/_run_cdm.ps1"
-$cdPath = Join-Path -Path $pwd -ChildPath "_run_cd.ps1"
+$cdPath = Join-Path -Path $pwd -ChildPath "_run_cdm.ps1"
 $rjUrl = "$repo/CDM/regjump.exe"
 $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 
