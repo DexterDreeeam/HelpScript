@@ -5,8 +5,9 @@ function DownloadIfNotExist($url, $path) {
     }
 }
 
-function RunPowershell($scriptFilePathAndArguments) {
-    Start-Process -FilePath Powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Unrestricted -NoProfile -File ""$scriptFilePathAndArguments"" -PauseOnCompletion"
+function RunPowershell($pathAndArgs) {
+    $psCmd = "-ExecutionPolicy Unrestricted -NoProfile -File ""$pathAndArgs"" -PauseOnCompletion"
+    Start-Process -FilePath Powershell.exe -ArgumentList $psCmd -Wait
 }
 
 function ElevateLevel()
@@ -18,8 +19,10 @@ function ElevateLevel()
     if (-not $isElevated)
     {
         Write-Host -ForegroundColor Cyan "This script requires administrator privileges. Elevating..."
-        Write-Host -ForegroundColor Cyan "$scriptFilePathAndArguments"
-        RunPowershell $MyInvocation.MyCommand.Path
+        $psCmd = "-ExecutionPolicy Unrestricted -NoProfile -File "
+        $psCmd += $MyInvocation.MyCommand.Path
+        $psCmd += " -PauseOnCompletion"
+        Start-Process -FilePath Powershell.exe -Verb RunAs -ArgumentList $psCmd
         exit
     }
 }
