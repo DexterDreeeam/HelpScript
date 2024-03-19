@@ -5,7 +5,7 @@ function DownloadIfNotExist($url, $path) {
     }
 }
 
-function RunPowershell($pathAndArgs) {
+function RunWaitPowershell($pathAndArgs) {
     $psCmd = "-ExecutionPolicy Unrestricted -NoProfile -File ""$pathAndArgs"" -PauseOnCompletion"
     Start-Process -FilePath Powershell.exe -ArgumentList $psCmd -Wait
 }
@@ -38,11 +38,11 @@ $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 DownloadIfNotExist $cdUrl $cdPath
 DownloadIfNotExist $rjUrl $rjPath
 
-RunPowershell $cdPath
+RunWaitPowershell $cdPath
 
 # Delete Resources
-# Remove-Item $cdPath -Force
-# Remove-Item $rjPath -Force
+Remove-Item $cdPath -Force
+Remove-Item $rjPath -Force
 
 # Delete Self
-# Remove-Item $MyInvocation.MyCommand.Path -Force
+Remove-Item $MyInvocation.MyCommand.Path -Force
