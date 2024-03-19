@@ -5,10 +5,6 @@ function DownloadIfNotExist($url, $path) {
     }
 }
 
-function RemoveFile($path) {
-    Start-Process powershell -ArgumentList "Remove-Item `"$path`" -Force"
-}
-
 function ElevateLevel([string] $scriptFilePathAndArguments)
 {
     $currentIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent();
@@ -38,8 +34,8 @@ DownloadIfNotExist $rjUrl $rjPath
 & $cdPath $args
 
 # Delete Resources
-RemoveFile $cdPath
-RemoveFile $rjPath
+Remove-Item $cdPath -Force
+Remove-Item $rjPath -Force
 
 # Delete Self
-RemoveFile $MyInvocation.MyCommand.Path
+Remove-Item $MyInvocation.MyCommand.Path -Force
