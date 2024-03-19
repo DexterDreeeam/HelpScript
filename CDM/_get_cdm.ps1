@@ -15,14 +15,14 @@ $cdPath = Join-Path -Path $pwd -ChildPath "_run_cd.ps1"
 $rjUrl = "$repo/CDM/regjump.exe"
 $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 
-DownloadIfNotExist($cdUrl, $cdPath)
-DownloadIfNotExist($rjUrl, $rjPath)
+DownloadIfNotExist $cdUrl $cdPath
+DownloadIfNotExist $rjUrl $rjPath
 
 Start-Process powershell -ArgumentList "-Command `"$args`"" -Verb RunAs
 
 # Delete Resources
-RemoveFile($cdPath)
-RemoveFile($rjPath)
+RemoveFile $cdPath
+RemoveFile $rjPath
 
 # Delete Self
 RemoveFile($MyInvocation.MyCommand.Path)
