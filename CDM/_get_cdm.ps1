@@ -5,7 +5,11 @@ function DownloadIfNotExist($url, $path) {
     }
 }
 
-function ElevateLevel([string] $scriptFilePathAndArguments)
+function RunPowershell($scriptFilePathAndArguments) {
+    Start-Process -FilePath Powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Unrestricted -NoProfile -File ""$scriptFilePathAndArguments"" -PauseOnCompletion"
+}
+
+function ElevateLevel($scriptFilePathAndArguments)
 {
     $currentIdentity = [System.Security.Principal.WindowsIdentity]::GetCurrent();
     $currentPrincipal = New-Object System.Security.Principal.WindowsPrincipal($currentIdentity);
@@ -15,7 +19,7 @@ function ElevateLevel([string] $scriptFilePathAndArguments)
     {
         Write-Host -ForegroundColor Cyan "This script requires administrator privileges. Elevating..."
         Write-Host -ForegroundColor Cyan "$scriptFilePathAndArguments"
-        Start-Process -FilePath Powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Unrestricted -NoProfile -File ""$scriptFilePathAndArguments"" -PauseOnCompletion"
+        RunPowershell $scriptFilePathAndArguments
         exit
     }
 }
@@ -31,7 +35,7 @@ $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 DownloadIfNotExist $cdUrl $cdPath
 DownloadIfNotExist $rjUrl $rjPath
 
-& $cdPath $args
+RunPowershell $MyInvocation.MyCommand.Path
 
 # Delete Resources
 Remove-Item $cdPath -Force
