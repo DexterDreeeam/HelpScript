@@ -1,3 +1,6 @@
+$workingDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+$regjumpPath = Join-Path -Path $workingDirectory -ChildPath "regjump.exe"
+
 $options = @("Open CDM content", "Open CDM Lite content", "Open CDM Lite TestFlight")
 Write-Host "Choose an option:"
 for ($i=0; $i -lt $options.Count; $i++) {
@@ -13,7 +16,7 @@ try {
         $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "LocalState\ContentManagementSDK\Creatives"
         Invoke-Item $cdmFolder
     } elseif ($choice -eq "2") {
-        regjump.exe "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\IrisService\Cache"
+        Start-Process -FilePath $regjumpPath -ArgumentList "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\IrisService\Cache"
     } elseif ($choice -eq "3") {
         $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\IrisService"
         $regName = "TestFlightId"
@@ -27,10 +30,9 @@ try {
                 -PropertyType String `
                 -Force
         }
-        regjump.exe "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\IrisService"
+        Start-Process -FilePath $regjumpPath -ArgumentList "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\IrisService"
     }
 } catch {
     Write-Error "An exception occurred: $_.Exception.Message"
     Read-Host -Prompt "Press Enter to exit"
 }
-
