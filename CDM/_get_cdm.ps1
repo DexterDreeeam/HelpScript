@@ -7,7 +7,9 @@ function DownloadIfNotExist($url, $path) {
 
 function RunWaitPowershell($pathAndArgs) {
     $psCmd = "-ExecutionPolicy Unrestricted -NoProfile -File ""$pathAndArgs"" -PauseOnCompletion"
-    Start-Process -FilePath Powershell.exe -ArgumentList $psCmd -Wait
+    $workingDirectory = Get-Location
+    Start-Process -FilePath Powershell.exe `
+        -ArgumentList $psCmd -WorkingDirectory $workingDirectory -Wait
 }
 
 function ElevateLevel()
