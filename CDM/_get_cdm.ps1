@@ -35,7 +35,7 @@ $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 DownloadIfNotExist $cdUrl $cdPath
 DownloadIfNotExist $rjUrl $rjPath
 
-RunPowershell $MyInvocation.MyCommand.Path
+RunPowershell $cdPath
 
 # Delete Resources
 Remove-Item $cdPath -Force
