@@ -38,8 +38,8 @@ DownloadIfNotExist $rjUrl $rjPath
 RunPowershell $cdPath
 
 # Delete Resources
-Remove-Item $cdPath -Force
-Remove-Item $rjPath -Force
+# Remove-Item $cdPath -Force
+# Remove-Item $rjPath -Force
 
 # Delete Self
-Remove-Item $MyInvocation.MyCommand.Path -Force
+# Remove-Item $MyInvocation.MyCommand.Path -Force
