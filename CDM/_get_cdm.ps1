@@ -1,3 +1,10 @@
+function DownloadIfNotExist($url, $path) {
+    $isExist = Test-Path $path -PathType Leaf
+    if (-not $isExist) {
+        Invoke-WebRequest -Uri $url -OutFile $path
+    }
+}
+
 function RemoveFile($path) {
     Start-Process powershell -ArgumentList "Remove-Item `"$path`" -Force"
 }
@@ -8,15 +15,8 @@ $cdPath = Join-Path -Path $pwd -ChildPath "_run_cd.ps1"
 $rjUrl = "$repo/CDM/regjump.exe"
 $rjPath = Join-Path -Path $pwd -ChildPath "regjump.exe"
 
-$cdExist = Test-Path $cdPath -PathType Leaf
-if (-not $cdExist) {
-    Invoke-WebRequest -Uri $cdUrl -OutFile $cdPath
-}
-
-$rjExist = Test-Path $rjPath -PathType Leaf
-if (-not $rjExist) {
-    Invoke-WebRequest -Uri $rjUrl -OutFile $rjPath
-}
+DownloadIfNotExist($cdUrl, $cdPath)
+DownloadIfNotExist($rjUrl, $rjPath)
 
 Start-Process powershell -ArgumentList "-Command `"$args`"" -Verb RunAs
 
