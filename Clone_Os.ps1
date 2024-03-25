@@ -1,5 +1,11 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
+# enable long file path
+git config --system core.longpaths true
+New-ItemProperty `
+    -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
+    -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+
 $dst = $args[0]
 $repoCacheServer = $null
 $vfsendpoint = "https://osgvfsserver.corp.microsoft.com"
