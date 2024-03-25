@@ -44,6 +44,9 @@ if ($null -ne $repoCacheServer) {
     }
 }
 
+set GIT_TEST_NO_WRITE_REV_INDEX=1
+git config --global pack.writeReverseIndex false
+
 if ($international) {
     gvfs clone $repo $dst --cache-server-url $repoCacheServer
 } elseif ($null -ne $repoCacheServer) {
