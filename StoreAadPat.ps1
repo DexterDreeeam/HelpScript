@@ -1,6 +1,6 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$DropPat = Read-Host -Prompt "Enter AAD Drop PAT"
+$Pat = Read-Host -Prompt "Enter AAD PAT"
 Install-Module CredentialManager -Force -Repository PSGallery
 
 $targets = "vpack:https://microsoft.artifacts.visualstudio.com", 
@@ -12,7 +12,7 @@ $targets | ForEach-Object {
     New-StoredCredential `
         -Target $_ `
         -UserName "PAT" `
-        -Password $DropPat `
+        -Password $Pat `
         -Persist LOCALMACHINE
 }
 
