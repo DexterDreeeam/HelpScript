@@ -16,7 +16,10 @@ if ($choice -eq "1") {
     $result = $folderBrowser.ShowDialog()
     if ($result -eq 'OK') {
         $selectedFolder = $folderBrowser.SelectedPath
-        Write-Output "Folder selected: $selectedFolder"
+        if ((Get-Item $selectedFolder).Name -ne "src") {
+            $selectedFolder = Join-Path -Path $selectedFolder -ChildPath "src"
+        }
+        Write-Output "Razzle path selected: $selectedFolder"
 
         $archDefault = "amd64fre"
         $arch = Read-Host -Prompt "Input Arch (Enter for default: $archDefault)"
