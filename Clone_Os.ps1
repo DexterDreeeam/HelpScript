@@ -47,11 +47,9 @@ if ([string]::IsNullOrWhiteSpace($dst)) {
 
 $dstPath = Join-Path -Path $pwd -ChildPath $dst
 if (Test-Path -Path $dstPath -PathType Container) {
-    Write-Host "The folder $folderPath exists."
-    $choice = Read-Host "Do you want to delete this folder? (Y/N)"
+    $choice = Read-Host "$dstPath exists. Delete? (Y/N)"
     if ($choice -eq "Y" -or $choice -eq "y") {
-        Remove-Item -Path $folderPath -Recurse -Force
-        Write-Host "Folder deleted successfully."
+        Remove-Item -Path $dstPath -Recurse -Force
     }
     elseif ($choice -eq "N" -or $choice -eq "n") {
         exit
