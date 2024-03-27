@@ -45,6 +45,19 @@ if ([string]::IsNullOrWhiteSpace($dst)) {
     $dst = $dstDefault
 }
 
+$dstPath = Join-Path -Path $pwd -ChildPath $dst
+if (Test-Path -Path $dstPath -PathType Container) {
+    Write-Host "The folder $folderPath exists."
+    $choice = Read-Host "Do you want to delete this folder? (Y/N)"
+    if ($choice -eq "Y" -or $choice -eq "y") {
+        Remove-Item -Path $folderPath -Recurse -Force
+        Write-Host "Folder deleted successfully."
+    }
+    elseif ($choice -eq "N" -or $choice -eq "n") {
+        exit
+    }
+}
+
 $international = $false
 if ($null -ne $repoCacheServer) {
     $choice = Read-Host "Use international cache server (for non-redmond dev machine)? (Y/N)"
