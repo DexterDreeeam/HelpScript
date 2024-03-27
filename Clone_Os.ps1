@@ -41,6 +41,10 @@ while ($true) {
     break
 }
 
+if ([string]::IsNullOrWhiteSpace($dst)) {
+    $dst = $dstDefault
+}
+
 $international = $false
 if ($null -ne $repoCacheServer) {
     $choice = Read-Host "Use international cache server (for non-redmond dev machine)? (Y/N)"
@@ -52,7 +56,7 @@ if ($null -ne $repoCacheServer) {
 set GIT_TEST_NO_WRITE_REV_INDEX=1
 git config --global pack.writeReverseIndex false
 
-
+$binaryPath = Join-Path -Path $pwd -ChildPath $binary
 
 if ($international) {
     gvfs clone $repo $dst --cache-server-url $repoCacheServer
