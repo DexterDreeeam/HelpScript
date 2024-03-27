@@ -7,6 +7,7 @@ New-ItemProperty `
     -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
 
 $dst = $args[0]
+$dstDefault = ""
 $repoCacheServer = $null
 $vfsendpoint = "https://osgvfsserver.corp.microsoft.com"
 $os2020entry = "0d54b6ef" + "-" + "7283" + "-" + "444f" + "-" + "847a" + "-" + "343728d58a4d"
@@ -22,13 +23,17 @@ while ($true) {
     if ($choice -eq "1") {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os.2020"
         $repoCacheServer = $vfsendpoint + "/" + $os2020entry
+        $dstDefault = "os.2020"
     } elseif ($choice -eq "2") {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os"
         $repoCacheServer = $vfsendpoint + "/" + $osentry
+        $dstDefault = "os"
     } elseif ($choice -eq "3") {
         $repo = "https://microsoft.visualstudio.com/DefaultCollection/OS/_git/OSClient"
+        $dstDefault = "OSClient"
     } elseif ($choice -eq "4") {
         $repo = "https://microsoft.visualstudio.com/DefaultCollection/Universal%20Store/_git/XS.SDX.Settings"
+        $dstDefault = "XS.SDX.Settings"
     } else {
         continue
     }
@@ -46,6 +51,8 @@ if ($null -ne $repoCacheServer) {
 
 set GIT_TEST_NO_WRITE_REV_INDEX=1
 git config --global pack.writeReverseIndex false
+
+
 
 if ($international) {
     gvfs clone $repo $dst --cache-server-url $repoCacheServer
