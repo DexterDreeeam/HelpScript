@@ -85,7 +85,6 @@ New-TestMachine `
     -Cache `
     -Flavor $flavor `
     -Branch $branch `
-    -Latest
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
