@@ -28,21 +28,28 @@ if ($flavor -in $flavors) {
     Write-Warning "Flavor not found, fallback to ProfDesktop"
 }
 
-$vmName = ""
-for ($i = 0; $i -lt 10; $i++) {
-    $name = "vm$i"
-    $exists = Get-VM -Name $name -ErrorAction SilentlyContinue
+# $vmName = ""
+# for ($i = 0; $i -lt 100; $i++) {
+#     $name = "vm$i"
+#     $exists = Get-VM -Name $name -ErrorAction SilentlyContinue
+#     if ($exists) {
+#         Write-Warning "$name exists"
+#     } else {
+#         $vmName = $name
+#         break
+#     }
+# }
+
+$vmName = "TestVm"
+while ($true) {
+    $name = Read-Host "Enter your VM Name"
+    $exists = Get-VM -Name $vmName -ErrorAction SilentlyContinue
     if ($exists) {
         Write-Warning "$name exists"
     } else {
         $vmName = $name
         break
     }
-}
-
-if ($vmName -eq "") {
-    Write-Error "VM names are occuppied."
-    exit 1
 }
 
 Write-Host "Creating VM: $vmName"
