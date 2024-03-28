@@ -84,7 +84,7 @@ New-TestMachine `
     -SavePath $vhdPath `
     -Cache `
     -Flavor $flavor `
-    -Branch $branch `
+    -Branch $branch
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
