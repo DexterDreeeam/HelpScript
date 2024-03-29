@@ -13,8 +13,7 @@ $binaryPath = Join-Path -Path $pwd -ChildPath $binary
 $downloadUrl = "https://www.voidtools.com/" + $binary
 Invoke-WebRequest $downloadUrl -OutFile $binaryPath
 
-Start-Process -FilePath $binaryPath -Wait
-Remove-Item -Path $binaryPath
+Start-Process -FilePath $binaryPath
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
