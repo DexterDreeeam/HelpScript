@@ -9,7 +9,8 @@ $bytes = [System.Text.Encoding]::Unicode.GetBytes( $bootstrapScript )
 $sig = Get-AuthenticodeSignature -Source 'BootstrapInstall.ps1' -Content $bytes
 if ( $sig.Status -eq 'Valid' ) {
   Invoke-Expression "& { $bootstrapScript }"
-} else {
+}
+else {
   Write-Error "Failed to validate signature: $($sig.Status)"
 }
 

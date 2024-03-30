@@ -6,6 +6,7 @@ if (-not $ixpCmd) {
     exit 1
 }
 
+$branchDefault = "official/ni_current_directshell_dev1"
 $branches = @(
     "official/ni_current_directshell_dev1",
     "official/ni_current_directshell_dev2",
@@ -15,7 +16,10 @@ $branches = @(
     "official/vb_release_svc_cfewebxt",
     "official/main"
 )
-$branchDefault = "official/ni_current_directshell_dev1"
+Write-Host "Choose an option:"
+for ($i=0; $i -lt $branches.Count; $i++) {
+    Write-Host "  $($i+1). $($branches[$i])"
+}
 $branchChoice = Read-Host "Enter your Branch or Index (default is $branchDefault)"
 if ([string]::IsNullOrWhiteSpace($branchChoice)) {
     $branch = $branchDefault
@@ -28,6 +32,7 @@ else {
     $branch = $branchChoice
 }
 
+$flavorDefault = "ProfDesktop"
 $flavors = @(
     "CloudEdition",
     "ClientCore",
@@ -40,7 +45,10 @@ $flavors = @(
     "TeamOS",
     "WindowsCore"
 )
-$flavorDefault = "ProfDesktop"
+Write-Host "Choose an option:"
+for ($i=0; $i -lt $flavors.Count; $i++) {
+    Write-Host "  $($i+1). $($flavors[$i])"
+}
 $flavorChoice = Read-Host "Enter your Flavor or Index (default is $flavorDefault)"
 if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
     $flavor = $flavorDefault

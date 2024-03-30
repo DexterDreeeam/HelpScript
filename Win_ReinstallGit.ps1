@@ -16,10 +16,12 @@ if ($choice -eq "1") {
     Write-Output "Installing VFS Git ..."
     winget install --id Microsoft.Git
     winget install --id Microsoft.VFSforGit
-} elseif ($choice -eq "2") {
+}
+elseif ($choice -eq "2") {
     Write-Output "Installing latest Git version..."
     winget install --id Git.Git -e --source winget
-} else {
+}
+else {
     Write-Output "Installing Git version $choice..."
     winget install --id Git.Git -e --source winget --version $choice
 }

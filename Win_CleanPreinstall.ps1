@@ -56,11 +56,13 @@ function RemoveSoftware($name, $displayName=$name) {
         $pkg = $t.name
         log "[one ] - Package $pkg installed."
         $r = $wshell.Popup("Uninstall $displayName : $pkg ?", 0, "Remove 1 Package", 32 + 4)
-    } elseif ($n -gt 1) {        
+    }
+    elseif ($n -gt 1) {        
         log "[many] - $n package for *$name*."
         $list = ($t.name -join ", ")
         $r = $wshell.Popup("Uninstall $displayName ($n): $list ?", 0, "Remove $n Package", 32 + 4)
-    } else {
+    }
+    else {
         log "[none] - Package $name not installed."
         return
     }

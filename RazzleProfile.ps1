@@ -25,7 +25,8 @@ function GetRazzleParameters {
         if ($flag -eq "") {
             $flag = $flagDefault
         }
-    } else {
+    }
+    else {
         exit 1
     }
 
@@ -54,7 +55,8 @@ function RazzleTerminalProfile {
             -SrcDir $pars.Path `
             -Arch $pars.Arch `
             -Flags $pars.Flag
-    } elseif ($choice -eq "2") {
+    }
+    elseif ($choice -eq "2") {
         Remove-RazzleTerminalProfile
     }
 }
@@ -68,7 +70,8 @@ $choice = Read-Host "Enter your operation"
 
 if ($choice -eq "1") {
     DirectRazzle
-} elseif ($choice -eq "2") {
+}
+elseif ($choice -eq "2") {
     RazzleTerminalProfile
 }
 

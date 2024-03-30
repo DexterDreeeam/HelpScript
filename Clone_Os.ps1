@@ -24,17 +24,21 @@ while ($true) {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os.2020"
         $repoCacheServer = $vfsendpoint + "/" + $os2020entry
         $dstDefault = "os.2020"
-    } elseif ($choice -eq "2") {
+    }
+    elseif ($choice -eq "2") {
         $repo = "https://microsoft.visualstudio.com/OS/_git/os"
         $repoCacheServer = $vfsendpoint + "/" + $osentry
         $dstDefault = "os"
-    } elseif ($choice -eq "3") {
+    }
+    elseif ($choice -eq "3") {
         $repo = "https://microsoft.visualstudio.com/DefaultCollection/OS/_git/OSClient"
         $dstDefault = "OSClient"
-    } elseif ($choice -eq "4") {
+    }
+    elseif ($choice -eq "4") {
         $repo = "https://microsoft.visualstudio.com/DefaultCollection/Universal%20Store/_git/XS.SDX.Settings"
         $dstDefault = "XS.SDX.Settings"
-    } else {
+    }
+    else {
         continue
     }
 
@@ -71,9 +75,11 @@ $binaryPath = Join-Path -Path $pwd -ChildPath $binary
 
 if ($international) {
     gvfs clone $repo $dst --cache-server-url $repoCacheServer
-} elseif ($null -ne $repoCacheServer) {
+}
+elseif ($null -ne $repoCacheServer) {
     gvfs clone $repo $dst
-} else {
+}
+else {
     git clone $repo $dst
 }
 
