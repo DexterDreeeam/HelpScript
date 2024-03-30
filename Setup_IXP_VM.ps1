@@ -25,12 +25,14 @@ if ([string]::IsNullOrWhiteSpace($branchChoice)) {
     $branch = $branchDefault
 }
 elseif ($branchChoice -as [int] -gt 0 -and $branchChoice -as [int] -le $branches.Count) {
-    $branchIndex = [int]$branchChoice
+    $branchIndex = [int]$branchChoice - 1
     $branch = $branches[$branchIndex]
 }
 else {
     $branch = $branchChoice
 }
+
+Write-Host "Branch [$branch]"
 
 $flavorDefault = "ProfDesktop"
 $flavors = @(
@@ -54,14 +56,13 @@ if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
     $flavor = $flavorDefault
 }
 elseif ($flavorChoice -as [int] -gt 0 -and $flavorChoice -as [int] -le $flavors.Count) {
-    $flavorIndex = [int]$flavorChoice
+    $flavorIndex = [int]$flavorChoice - 1
     $flavor = $flavors[$flavorIndex]
 }
 else {
     $flavor = $flavorChoice
 }
 
-Write-Host "Branch [$branch]"
 Write-Host "Flavor [$flavor]"
 
 # $vmName = "TestVm"
