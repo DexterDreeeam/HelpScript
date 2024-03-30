@@ -6,15 +6,15 @@ if (-not $ixpCmd) {
     exit 1
 }
 
-$branchDefault = "official/ni_current_directshell_dev1"
+$branchDefault = "ni_current_directshell_dev1"
 $branches = @(
-    "official/ni_current_directshell_dev1",
-    "official/ni_current_directshell_dev2",
-    "official/ni_current_directshell_dev3",
-    "official/rs_we_sigx_dev1",
-    "official/vb_release_svc_cfedge",
-    "official/vb_release_svc_cfewebxt",
-    "official/main"
+    "ni_current_directshell_dev1",
+    "ni_current_directshell_dev2",
+    "ni_current_directshell_dev3",
+    "rs_we_sigx_dev1",
+    "vb_release_svc_cfedge",
+    "vb_release_svc_cfewebxt",
+    "main"
 )
 Write-Host "Choose an option:"
 for ($i=0; $i -lt $branches.Count; $i++) {
@@ -32,7 +32,8 @@ else {
     $branch = $branchChoice
 }
 
-Write-Host "Branch [$branch]"
+Write-Host -NoNewline "Branch " -ForegroundColor Yellow
+Write-Host -NoNewline $branch   -ForegroundColor Green
 
 $flavorDefault = "ProfDesktop"
 $flavors = @(
@@ -63,7 +64,8 @@ else {
     $flavor = $flavorChoice
 }
 
-Write-Host "Flavor [$flavor]"
+Write-Host -NoNewline "Flavor " -ForegroundColor Yellow
+Write-Host -NoNewline $flavor   -ForegroundColor Green
 
 # $vmName = "TestVm"
 # while ($true) {
@@ -92,7 +94,8 @@ for ($i = 0; $i -lt 100; $i++) {
     }
 }
 
-Write-Host "Creating VM: $vmName"
+Write-Host -NoNewline "Creating VM " -ForegroundColor Yellow
+Write-Host -NoNewline $vmName        -ForegroundColor Green
 
 $externalSwitch = Get-VMSwitch | Where-Object { $_.SwitchType -eq 'External' } | Select-Object -First 1
 if ([bool]$externalSwitch) {
@@ -101,7 +104,8 @@ if ([bool]$externalSwitch) {
     $switch = "Default Switch"
 }
 
-Write-Host "Network Switch [$switch]"
+Write-Host -NoNewline "Network Switch " -ForegroundColor Yellow
+Write-Host -NoNewline $switch           -ForegroundColor Green
 
 $volumeD = Get-Volume -DriveLetter D -ErrorAction SilentlyContinue
 if ($volumeD) {
