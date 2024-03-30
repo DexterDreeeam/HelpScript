@@ -76,9 +76,9 @@ for ($i = 0; $i -lt 100; $i++) {
         Write-Warning "VM Prefix [$prefix] exists"
     } else {
         $length = 8
-        $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        $randomString = -join ((Get-Random -Count $length -InputObject $characters.ToCharArray()))
-        $vmName = $prefix + $randomString
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        $randomStr = -join ((Get-Random -Count $length -InputObject $chars.ToCharArray()))
+        $vmName = $prefix + $randomStr
         break
     }
 }
