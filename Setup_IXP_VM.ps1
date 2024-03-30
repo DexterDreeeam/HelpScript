@@ -16,11 +16,11 @@ $branches = @(
     "vb_release_svc_cfewebxt",
     "main"
 )
-Write-Host "Choose an option:" -ForegroundColor Yellow
+Write-Host "Choose an option:"
 for ($i=0; $i -lt $branches.Count; $i++) {
-    Write-Host "  $($i+1). $($branches[$i])"
+    Write-Host "  $($i+1). $($branches[$i])" -ForegroundColor Yellow
 }
-$branchChoice = Read-Host "Enter Index or Branch (default $branchDefault)" -ForegroundColor Yellow
+$branchChoice = Read-Host "Enter Index or Branch (default $branchDefault)"
 if ([string]::IsNullOrWhiteSpace($branchChoice)) {
     $branch = $branchDefault
 }
@@ -48,11 +48,11 @@ $flavors = @(
     "TeamOS",
     "WindowsCore"
 )
-Write-Host "Choose an option:" -ForegroundColor Yellow
+Write-Host "Choose an option:"
 for ($i=0; $i -lt $flavors.Count; $i++) {
-    Write-Host "  $($i+1). $($flavors[$i])"
+    Write-Host "  $($i+1). $($flavors[$i])" -ForegroundColor Yellow
 }
-$flavorChoice = Read-Host "Enter Index or Flavor (default $flavorDefault)" -ForegroundColor Yellow
+$flavorChoice = Read-Host "Enter Index or Flavor (default $flavorDefault)"
 if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
     $flavor = $flavorDefault
 }
