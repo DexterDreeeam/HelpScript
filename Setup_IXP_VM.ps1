@@ -64,8 +64,8 @@ else {
     $flavor = $flavorChoice
 }
 
-Write-Host -NoNewline "Flavor " -ForegroundColor Yellow
-Write-Host -NoNewline $flavor   -ForegroundColor Green
+Write-Host "Flavor " -ForegroundColor Yellow -NoNewline
+Write-Host $flavor   -ForegroundColor Green
 
 # $vmName = "TestVm"
 # while ($true) {
@@ -94,8 +94,8 @@ for ($i = 0; $i -lt 100; $i++) {
     }
 }
 
-Write-Host -NoNewline "Creating VM " -ForegroundColor Yellow
-Write-Host -NoNewline $vmName        -ForegroundColor Green
+Write-Host "Creating VM " -ForegroundColor Yellow -NoNewline
+Write-Host $vmName        -ForegroundColor Green
 
 $externalSwitch = Get-VMSwitch | Where-Object { $_.SwitchType -eq 'External' } | Select-Object -First 1
 if ([bool]$externalSwitch) {
@@ -104,8 +104,8 @@ if ([bool]$externalSwitch) {
     $switch = "Default Switch"
 }
 
-Write-Host -NoNewline "Network Switch " -ForegroundColor Yellow
-Write-Host -NoNewline $switch           -ForegroundColor Green
+Write-Host "Network Switch " -ForegroundColor Yellow -NoNewline
+Write-Host $switch           -ForegroundColor Green
 
 $volumeD = Get-Volume -DriveLetter D -ErrorAction SilentlyContinue
 if ($volumeD) {
