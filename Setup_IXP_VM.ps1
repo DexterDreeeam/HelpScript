@@ -6,6 +6,25 @@ if (-not $ixpCmd) {
     exit 1
 }
 
+$branches = @(
+    "official/ni_current_directshell_dev1",
+    "official/ni_current_directshell_dev2",
+    "official/ni_current_directshell_dev3",
+    "official/rs_we_sigx_dev1",
+    "official/vb_release_svc_cfedge",
+    "official/vb_release_svc_cfewebxt",
+    "official/main"
+)
+$branchDefault = "official/ni_current_directshell_dev1"
+$branchChoice = Read-Host "Enter your Branch or Index (default is $branchDefault)"
+if ([string]::IsNullOrWhiteSpace($branchChoice)) {
+    $branch = $branchDefault
+}
+elseif ($branchChoice -as [int] -gt 0 -and $branchChoice -as [int] -le $branches.Count) {
+    $branchIndex = [int]$branchChoice
+    $branch = $branches[$branchIndex]
+}
+
 $flavors = @(
     "CloudEdition",
     "ClientCore",
@@ -18,20 +37,23 @@ $flavors = @(
     "TeamOS",
     "WindowsCore"
 )
-$branch = $args[0]
-$flavor = $args[1]
-
-if ($flavor -in $flavors) {
-    Write-Host "Flavor is $flavor"
-} else {
-    $flavor = "ProfDesktop"
-    Write-Warning "Flavor not found, fallback to ProfDesktop"
+$flavorDefault = "ProfDesktop"
+$flavorChoice = Read-Host "Enter your Flavor or Index (default is $flavorDefault)"
+if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
+    $flavor = $flavorDefault
+}
+elseif ($flavorChoice -as [int] -gt 0 -and $flavorChoice -as [int] -le $flavors.Count) {
+    $flavorIndex = [int]$flavorChoice
+    $flavor = $flavors[$flavorIndex]
 }
 
-# $vmName = ""
-# for ($i = 0; $i -lt 100; $i++) {
-#     $name = "vm$i"
-#     $exists = Get-VM -Name $name -ErrorAction SilentlyContinue
+Write-Host "Branch [$branch]"
+Write-Host "Flavor [$flavor]"
+
+# $vmName = "TestVm"
+# while ($true) {
+#     $name = Read-Host "Enter your VM Name"
+#     $exists = Get-VM -Name $vmName -ErrorAction SilentlyContinue
 #     if ($exists) {
 #         Write-Warning "$name exists"
 #     } else {
@@ -40,14 +62,17 @@ if ($flavor -in $flavors) {
 #     }
 # }
 
-$vmName = "TestVm"
-while ($true) {
-    $name = Read-Host "Enter your VM Name"
-    $exists = Get-VM -Name $vmName -ErrorAction SilentlyContinue
-    if ($exists) {
-        Write-Warning "$name exists"
+$vmNames = Get-VM | Select-Object -ExpandProperty Name
+for ($i = 0; $i -lt 100; $i++) {
+    $prefix = "vm$i-"
+    $vmsWithPrefix = $vmNames -like $prefix
+    if ($vmsWithPrefix) {
+        Write-Warning "VM Prefix [$prefix] exists"
     } else {
-        $vmName = $name
+        $length = 8
+        $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        $randomString = -join ((Get-Random -Count $length -InputObject $characters.ToCharArray()))
+        $vmName = $prefix + $randomString
         break
     }
 }
@@ -61,7 +86,7 @@ if ([bool]$externalSwitch) {
     $switch = "Default Switch"
 }
 
-Write-Host "Use Switch: $switch"
+Write-Host "Network Switch [$switch]"
 
 $volumeD = Get-Volume -DriveLetter D -ErrorAction SilentlyContinue
 if ($volumeD) {
@@ -81,10 +106,10 @@ New-TestMachine `
     -KdSetupMode Disable `
     -VmNumProcessors 8 `
     -VmMemInGb 8 `
-    -SavePath $vhdPath `
-    -Cache `
+    -Branch $branch `
     -Flavor $flavor `
-    -Branch $branch
+    -SavePath $vhdPath `
+    -Cache
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
