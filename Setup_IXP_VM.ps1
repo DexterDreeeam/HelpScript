@@ -20,7 +20,7 @@ Write-Host "Choose an option:"
 for ($i=0; $i -lt $branches.Count; $i++) {
     Write-Host "  $($i+1). $($branches[$i])"
 }
-$branchChoice = Read-Host "Enter your Branch or Index (default is $branchDefault)"
+$branchChoice = Read-Host "Enter Index or Branch (default $branchDefault)"
 if ([string]::IsNullOrWhiteSpace($branchChoice)) {
     $branch = $branchDefault
 }
@@ -49,7 +49,7 @@ Write-Host "Choose an option:"
 for ($i=0; $i -lt $flavors.Count; $i++) {
     Write-Host "  $($i+1). $($flavors[$i])"
 }
-$flavorChoice = Read-Host "Enter your Flavor or Index (default is $flavorDefault)"
+$flavorChoice = Read-Host "Enter Index or Flavor (default $flavorDefault)"
 if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
     $flavor = $flavorDefault
 }
