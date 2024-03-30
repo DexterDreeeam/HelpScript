@@ -32,8 +32,8 @@ else {
     $branch = $branchChoice
 }
 
-Write-Host -NoNewline "Branch " -ForegroundColor Yellow
-Write-Host -NoNewline $branch   -ForegroundColor Green
+Write-Host "Branch " -ForegroundColor Yellow -NoNewline
+Write-Host $branch   -ForegroundColor Green
 
 $flavorDefault = "ProfDesktop"
 $flavors = @(
