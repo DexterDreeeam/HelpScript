@@ -20,7 +20,7 @@ Write-Host "Choose an option:" -ForegroundColor Yellow
 for ($i=0; $i -lt $branches.Count; $i++) {
     Write-Host "  $($i+1). $($branches[$i])"
 }
-$branchChoice = Read-Host "Enter Index or Branch (default $branchDefault)"
+$branchChoice = Read-Host "Enter Index or Branch (default $branchDefault)" -ForegroundColor Yellow
 if ([string]::IsNullOrWhiteSpace($branchChoice)) {
     $branch = $branchDefault
 }
@@ -52,7 +52,7 @@ Write-Host "Choose an option:" -ForegroundColor Yellow
 for ($i=0; $i -lt $flavors.Count; $i++) {
     Write-Host "  $($i+1). $($flavors[$i])"
 }
-$flavorChoice = Read-Host "Enter Index or Flavor (default $flavorDefault)"
+$flavorChoice = Read-Host "Enter Index or Flavor (default $flavorDefault)" -ForegroundColor Yellow
 if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
     $flavor = $flavorDefault
 }
