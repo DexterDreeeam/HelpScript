@@ -16,7 +16,7 @@ $branches = @(
     "vb_release_svc_cfewebxt",
     "main"
 )
-Write-Host "Choose an option:"
+Write-Host "Choose an option:" -ForegroundColor Yellow
 for ($i=0; $i -lt $branches.Count; $i++) {
     Write-Host "  $($i+1). $($branches[$i])"
 }
@@ -48,7 +48,7 @@ $flavors = @(
     "TeamOS",
     "WindowsCore"
 )
-Write-Host "Choose an option:"
+Write-Host "Choose an option:" -ForegroundColor Yellow
 for ($i=0; $i -lt $flavors.Count; $i++) {
     Write-Host "  $($i+1). $($flavors[$i])"
 }
