@@ -11,7 +11,7 @@ if ($response.Content -match $pattern) {
 
 $binaryPath = Join-Path -Path $pwd -ChildPath $binary
 $downloadUrl = "https://www.voidtools.com/" + $binary
-Invoke-WebRequest $downloadUrl -OutFile $binaryPath
+Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath
 
 Start-Process -FilePath $binaryPath -Wait
 Remove-Item -Path $binaryPath
