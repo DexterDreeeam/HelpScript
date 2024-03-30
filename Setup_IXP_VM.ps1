@@ -24,6 +24,9 @@ elseif ($branchChoice -as [int] -gt 0 -and $branchChoice -as [int] -le $branches
     $branchIndex = [int]$branchChoice
     $branch = $branches[$branchIndex]
 }
+else {
+    $branch = $branchChoice
+}
 
 $flavors = @(
     "CloudEdition",
@@ -45,6 +48,9 @@ if ([string]::IsNullOrWhiteSpace($flavorChoice)) {
 elseif ($flavorChoice -as [int] -gt 0 -and $flavorChoice -as [int] -le $flavors.Count) {
     $flavorIndex = [int]$flavorChoice
     $flavor = $flavors[$flavorIndex]
+}
+else {
+    $flavor = $flavorChoice
 }
 
 Write-Host "Branch [$branch]"
