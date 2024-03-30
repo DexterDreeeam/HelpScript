@@ -1,14 +1,7 @@
 Add-Type -AssemblyName System.Windows.Forms
-
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$options = @("Add Profile", "Remove Profile")
-Write-Host "Choose an option:"
-for ($i=0; $i -lt $options.Count; $i++) {
-    Write-Host "  $($i+1). $($options[$i])"
-}
-$choice = Read-Host "Enter your operation"
-if ($choice -eq "1") {
+function GetRazzleParameters {
     $folderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
     $folderBrowser.Description = "Select os.2020 folder"
     $folderBrowser.RootFolder = "MyComputer"
@@ -32,14 +25,51 @@ if ($choice -eq "1") {
         if ($flag -eq "") {
             $flag = $flagDefault
         }
-
-        New-RazzleTerminalProfile `
-            -SrcDir $selectedFolder `
-            -Arch $arch `
-            -Flags $flag
+    } else {
+        exit 1
     }
+
+    return @{
+        Path = $selectedFolder
+        Arch = $arch
+        Flag = $flag
+    }
+}
+
+function DirectRazzle {
+    $pars = GetRazzleParameters
+    raz $pars.Path $pars.Arch -Flags $pars.Flag
+}
+
+function RazzleTerminalProfile {
+    $options = @("Add Profile", "Remove Profile")
+    Write-Host "Choose an option:"
+    for ($i=0; $i -lt $options.Count; $i++) {
+        Write-Host "  $($i+1). $($options[$i])"
+    }
+    $choice = Read-Host "Enter your operation"
+    if ($choice -eq "1") {
+        $pars = GetRazzleParameters
+        New-RazzleTerminalProfile `
+            -SrcDir $pars.Path `
+            -Arch $pars.Arch `
+            -Flags $pars.Flag
+    } elseif ($choice -eq "2") {
+        Remove-RazzleTerminalProfile
+    }
+}
+
+$options = @("Direct Raz", "Razzle Terminal Profile")
+Write-Host "Choose an option:"
+for ($i=0; $i -lt $options.Count; $i++) {
+    Write-Host "  $($i+1). $($options[$i])"
+}
+$choice = Read-Host "Enter your operation"
+
+if ($choice -eq "1") {
+    DirectRazzle
 } elseif ($choice -eq "2") {
-    Remove-RazzleTerminalProfile
+    RazzleTerminalProfile
 }
 
 # Delete Self
