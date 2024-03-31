@@ -1,8 +1,19 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 function CheckNonSystemPath {
-    $systemFolder = [Environment]::SystemDirectory
+    $windowsDir = [Environment]::GetFolderPath("Windows")
+    $programFilesDir = [Environment]::GetFolderPath("ProgramFiles")
+    $programFilesX86Dir = [Environment]::GetFolderPath("ProgramFilesX86")
+    $systemDir = [Environment]::SystemDirectory
+    $p = $pwd.Path
     if ($pwd.Path.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
+        Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
+        exit 1
+    }
+    if ($p.StartsWith($windowsDir, [StringComparison]::OrdinalIgnoreCase) -or
+        $p.StartsWith($programFilesDir, [StringComparison]::OrdinalIgnoreCase) -or
+        $p.StartsWith($programFilesX86Dir, [StringComparison]::OrdinalIgnoreCase) -or
+        $p.StartsWith($systemDir, [StringComparison]::OrdinalIgnoreCase)) {
         Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
         exit 1
     }
