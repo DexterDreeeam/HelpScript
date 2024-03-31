@@ -16,7 +16,7 @@ function CheckNonSystemPath {
 }
 
 function DownloadAndRun($downloadUrl, $binaryUrl) {
-    Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath -Force
+    Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath
     if (Test-Path $binaryPath -PathType Leaf) {
         Start-Process -FilePath $binaryPath
     }
