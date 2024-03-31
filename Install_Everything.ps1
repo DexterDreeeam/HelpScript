@@ -11,14 +11,28 @@ if ($response.Content -match $pattern) {
 
 $binaryPath = Join-Path -Path $pwd -ChildPath $binary
 $downloadUrl = "https://www.voidtools.com/" + $binary
-Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath
 
-if (Test-Path $binaryPath -PathType Leaf) {
-    Start-Process -FilePath $binaryPath
+function CheckNonSystemPath {
+    $systemFolder = [Environment]::SystemDirectory
+    if ($pwd.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
+        Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
+        exit 1
+    }
 }
-else {
-    Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
+
+function DownloadAndRun($downloadUrl, $binaryUrl) {
+    Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath
+    if (Test-Path $binaryPath -PathType Leaf) {
+        Start-Process -FilePath $binaryPath
+    }
+    else {
+        Write-Host "$binaryUrl download failed." -ForegroundColor Red
+        exit 1
+    }
 }
+
+CheckNonSystemPath
+DownloadAndRun $downloadUrl $binaryPath
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path
