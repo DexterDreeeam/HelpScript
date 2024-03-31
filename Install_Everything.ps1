@@ -14,7 +14,7 @@ $downloadUrl = "https://www.voidtools.com/" + $binary
 
 function CheckNonSystemPath {
     $systemFolder = [Environment]::SystemDirectory
-    if ($pwd.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
+    if ($pwd.Path.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
         Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
         exit 1
     }
