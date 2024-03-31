@@ -5,15 +5,11 @@ function CheckNonSystemPath {
     $programFilesDir = [Environment]::GetFolderPath("ProgramFiles")
     $programFilesX86Dir = [Environment]::GetFolderPath("ProgramFilesX86")
     $systemDir = [Environment]::SystemDirectory
-    $p = $pwd.Path
-    if ($pwd.Path.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
-        Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
-        exit 1
-    }
-    if ($p.StartsWith($windowsDir, [StringComparison]::OrdinalIgnoreCase) -or
-        $p.StartsWith($programFilesDir, [StringComparison]::OrdinalIgnoreCase) -or
-        $p.StartsWith($programFilesX86Dir, [StringComparison]::OrdinalIgnoreCase) -or
-        $p.StartsWith($systemDir, [StringComparison]::OrdinalIgnoreCase)) {
+    $_p = $pwd.Path
+    if ($_p.StartsWith($windowsDir, [StringComparison]::OrdinalIgnoreCase) -or
+        $_p.StartsWith($programFilesDir, [StringComparison]::OrdinalIgnoreCase) -or
+        $_p.StartsWith($programFilesX86Dir, [StringComparison]::OrdinalIgnoreCase) -or
+        $_p.StartsWith($systemDir, [StringComparison]::OrdinalIgnoreCase)) {
         Write-Host "Please switch to another non-system folder and retry" -ForegroundColor Red
         exit 1
     }
