@@ -16,25 +16,36 @@ function ValidStoolExist {
     return $false
 }
 
-if ($null -eq $code) {
-    Write-Error "No decryption code provided"
-    exit 1
+function MainEntry {
+    if ($null -eq $code) {
+        Write-Error "No decryption code provided"
+        exit 1
+    }
+    $replace = [System.Text.Encoding]::ASCII.GetBytes($code)
+    
+    while (-not (ValidStoolExist)) {
+        Remove-Item -Path $stoolPath -ErrorAction SilentlyContinue
+        Invoke-WebRequest -Uri $binUrl -OutFile $binPath
+        $stream = [System.IO.File]::Open(
+            $binPath,
+            [System.IO.FileMode]::Open,
+            [System.IO.FileAccess]::ReadWrite)
+        $stream.Position = 0
+        $stream.Write($replace, 0, $replace.Length)
+        $stream.Flush()
+        $stream.Close()
+        Start-Sleep -Seconds 3
+        Rename-Item -Path $binPath -NewName $stoolPath
+    }
 }
-$replace = [System.Text.Encoding]::ASCII.GetBytes($code)
 
-while (-not (ValidStoolExist)) {
-    Remove-Item -Path $stoolPath -ErrorAction SilentlyContinue
-    Invoke-WebRequest -Uri $binUrl -OutFile $binPath
-    $stream = [System.IO.File]::Open(
-        $binPath,
-        [System.IO.FileMode]::Open,
-        [System.IO.FileAccess]::ReadWrite)
-    $stream.Position = 0
-    $stream.Write($replace, 0, $replace.Length)
-    $stream.Flush()
-    $stream.Close()
-    Start-Sleep -Seconds 3
-    Rename-Item -Path $binPath -NewName $stoolPath
+try {
+    MainEntry
+}
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
 }
 
 # Delete Self

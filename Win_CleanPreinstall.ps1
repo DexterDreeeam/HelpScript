@@ -1,33 +1,34 @@
 # query
 # Get-AppxPackage -AllUsers | Select-Object -ExpandProperty Name
 
-$uninstalls = @()
-$uninstalls += "549981C3F5F10" # Cortana
-$uninstalls += "BingNews"
-$uninstalls += "BingWeather"
-$uninstalls += "Clipchamp.Clipchamp"
-$uninstalls += "CloudExperienceHost"
-$uninstalls += "Copilot"
-$uninstalls += "DevHome"
-$uninstalls += "GetHelp"
-$uninstalls += "MicrosoftOffice"
-$uninstalls += "MicrosoftSolitaireCollection"
-$uninstalls += "MicrosoftTeams"
-$uninstalls += "Microsoft.People"
-$uninstalls += "Microsoft.Todos"
-$uninstalls += "OneDrive"
-$uninstalls += "Outlook"
-$uninstalls += "PowerAutomateDesktop"
-$uninstalls += "QuickAssist"
-$uninstalls += "ScreenSketch"
-$uninstalls += "StickyNotes"
-$uninstalls += "WindowsCamera"
-$uninstalls += "windowscommunicationsapps"
-$uninstalls += "WindowsFeedbackHub"
-$uninstalls += "WindowsMaps"
-$uninstalls += "YourPhone"
-$uninstalls += "ZuneMusic"
-$uninstalls += "ZuneVideo"
+$uninstalls = @(
+    "549981C3F5F10", # Cortana
+    "BingNews",
+    "BingWeather",
+    "Clipchamp.Clipchamp",
+    "CloudExperienceHost",
+    "Copilot",
+    "DevHome",
+    "GetHelp",
+    "MicrosoftOffice",
+    "MicrosoftSolitaireCollection",
+    "MicrosoftTeams",
+    "Microsoft.People",
+    "Microsoft.Todos",
+    "OneDrive",
+    "Outlook",
+    "PowerAutomateDesktop",
+    "QuickAssist",
+    "ScreenSketch",
+    "StickyNotes",
+    "WindowsCamera",
+    "windowscommunicationsapps",
+    "WindowsFeedbackHub",
+    "WindowsMaps",
+    "YourPhone",
+    "ZuneMusic",
+    "ZuneVideo"
+)
 
 function log($msg = "") {
     Write-Output $msg;
@@ -82,24 +83,35 @@ function RemoveSoftware($name, $displayName=$name) {
     return
 }
 
-foreach ($appx in $uninstalls) {
-    RemoveSoftware $appx
+function MainEntry {
+    foreach ($appx in $uninstalls) {
+        RemoveSoftware $appx
+    }
+    
+    # Clean TaskBar - Teams Chat
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarMn" -Type "DWord" -Value 0
+    # Clean TaskBar - Task View
+    Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type "DWord" -Value 0
+    # Clean TaskBar - Copilot
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCopilotButton" -Type "DWord" -Value 0
+    # Clean TaskBar - Widget
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Type "DWord" -Value "0"
+    # Clean TaskBar - Search Box
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type "DWord" -Value 0
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarModeCache" -Type "DWord" -Value 1
+    
+    winget install --id Microsoft.Powershell --source winget
+    winget install Microsoft.PowerToys
 }
 
-# Clean TaskBar - Teams Chat
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarMn" -Type "DWord" -Value 0
-# Clean TaskBar - Task View
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type "DWord" -Value 0
-# Clean TaskBar - Copilot
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCopilotButton" -Type "DWord" -Value 0
-# Clean TaskBar - Widget
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Type "DWord" -Value "0"
-# Clean TaskBar - Search Box
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type "DWord" -Value 0
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarModeCache" -Type "DWord" -Value 1
-
-winget install --id Microsoft.Powershell --source winget
-winget install Microsoft.PowerToys
+try {
+    MainEntry
+}
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path

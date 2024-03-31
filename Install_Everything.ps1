@@ -1,17 +1,5 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$pageUrl = "https://www.voidtools.com/downloads/"
-$response = Invoke-WebRequest -Uri $pageUrl
-$pattern = "Everything-(\d+\.\d+\.\d+\.\d+)\.x64\.Lite-Setup\.exe"
-$binary = "Everything-1.4.1.1024.x64.Lite-Setup.exe"
-
-if ($response.Content -match $pattern) {
-    $binary = $matches[0]
-}
-
-$binaryPath = Join-Path -Path $pwd -ChildPath $binary
-$downloadUrl = "https://www.voidtools.com/" + $binary
-
 function CheckNonSystemPath {
     $systemFolder = [Environment]::SystemDirectory
     if ($pwd.Path.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
@@ -31,8 +19,31 @@ function DownloadAndRun($downloadUrl, $binaryUrl) {
     }
 }
 
-CheckNonSystemPath
-DownloadAndRun $downloadUrl $binaryPath
+function MainEntry {
+    $pageUrl = "https://www.voidtools.com/downloads/"
+    $response = Invoke-WebRequest -Uri $pageUrl
+    $pattern = "Everything-(\d+\.\d+\.\d+\.\d+)\.x64\.Lite-Setup\.exe"
+    $binary = "Everything-1.4.1.1024.x64.Lite-Setup.exe"
+    
+    if ($response.Content -match $pattern) {
+        $binary = $matches[0]
+    }
+    
+    $binaryPath = Join-Path -Path $pwd -ChildPath $binary
+    $downloadUrl = "https://www.voidtools.com/" + $binary
+    
+    CheckNonSystemPath
+    DownloadAndRun $downloadUrl $binaryPath
+}
+
+try {
+    MainEntry
+}
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path

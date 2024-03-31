@@ -1,9 +1,5 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$binary = "RemoteTools.amd64ret.enu.exe"
-$binaryPath = Join-Path -Path $pwd -ChildPath $binary
-$downloadUrl = "https://aka.ms/vs/17/release/" + $binary
-
 function CheckNonSystemPath {
     $systemFolder = [Environment]::SystemDirectory
     if ($pwd.Path.StartsWith($systemFolder, [StringComparison]::OrdinalIgnoreCase)) {
@@ -23,8 +19,23 @@ function DownloadAndRun($downloadUrl, $binaryUrl) {
     }
 }
 
-CheckNonSystemPath
-DownloadAndRun $downloadUrl $binaryPath
+function MainEntry {
+    $binary = "RemoteTools.amd64ret.enu.exe"
+    $binaryPath = Join-Path -Path $pwd -ChildPath $binary
+    $downloadUrl = "https://aka.ms/vs/17/release/" + $binary
+    
+    CheckNonSystemPath
+    DownloadAndRun $downloadUrl $binaryPath
+}
+
+try {
+    MainEntry
+}
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path

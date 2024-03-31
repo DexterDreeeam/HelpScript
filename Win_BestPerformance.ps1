@@ -80,10 +80,21 @@ Windows Registry Editor Version 5.00
 "UserPreferencesMask"=hex:90,12,01,80,10,00,00,00
 '@
 
-$out | Out-File -FilePath "$Env:TEMP\AdjustForBestPerformanceVisual.reg" -Force -Encoding oem
-Invoke-Command { reg import "$Env:TEMP\AdjustForBestPerformanceVisual.reg" *>&1 | Out-Null }
-# Must restart the Themes service
-Restart-Service Themes -Force
+function MainEntry {
+    $out | Out-File -FilePath "$Env:TEMP\AdjustForBestPerformanceVisual.reg" -Force -Encoding oem
+    Invoke-Command { reg import "$Env:TEMP\AdjustForBestPerformanceVisual.reg" *>&1 | Out-Null }
+    # Must restart the Themes service
+    Restart-Service Themes -Force
+}
+
+try {
+    MainEntry
+}
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
+}
 
 # Delete Self
 $myPsPath = $MyInvocation.MyCommand.Path

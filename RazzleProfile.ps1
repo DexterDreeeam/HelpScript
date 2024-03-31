@@ -61,18 +61,29 @@ function RazzleTerminalProfile {
     }
 }
 
-$options = @("Direct Raz", "Razzle Terminal Profile")
-Write-Host "Choose an option:"
-for ($i=0; $i -lt $options.Count; $i++) {
-    Write-Host "  $($i+1). $($options[$i])"
+function MainEntry {
+    $options = @("Direct Raz", "Razzle Terminal Profile")
+    Write-Host "Choose an option:"
+    for ($i=0; $i -lt $options.Count; $i++) {
+        Write-Host "  $($i+1). $($options[$i])"
+    }
+    $choice = Read-Host "Enter your operation"
+    
+    if ($choice -eq "1") {
+        DirectRazzle
+    }
+    elseif ($choice -eq "2") {
+        RazzleTerminalProfile
+    }
 }
-$choice = Read-Host "Enter your operation"
 
-if ($choice -eq "1") {
-    DirectRazzle
+try {
+    MainEntry
 }
-elseif ($choice -eq "2") {
-    RazzleTerminalProfile
+catch {
+    Write-Host "Exception:" -ForegroundColor Red
+    Write-Host $_.Exception.Message -ForegroundColor Red
+    exit 1
 }
 
 # Delete Self
