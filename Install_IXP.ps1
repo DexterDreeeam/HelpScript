@@ -22,6 +22,7 @@ try {
 catch {
     Write-Host "Exception:" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
+    Write-Host $_.Exception.StackTrace -ForegroundColor Red
     exit 1
 }
 

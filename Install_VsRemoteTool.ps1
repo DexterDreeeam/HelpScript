@@ -17,7 +17,7 @@ function CheckNonSystemPath {
 }
 
 function DownloadAndRun($downloadUrl, $binaryUrl) {
-    Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath -Force
+    Start-BitsTransfer -Source $downloadUrl -Destination $binaryPath
     if (Test-Path $binaryPath -PathType Leaf) {
         Start-Process -FilePath $binaryPath
     }
@@ -42,6 +42,7 @@ try {
 catch {
     Write-Host "Exception:" -ForegroundColor Red
     Write-Host $_.Exception.Message -ForegroundColor Red
+    Write-Host $_.Exception.StackTrace -ForegroundColor Red
     exit 1
 }
 
