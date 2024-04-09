@@ -1,6 +1,6 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$branchDefault = "ni_current_directshell_dev1"
+$branchDefault = "ni_current_directshell"
 $branches = @(
     "ni_current_directshell",
     "ni_current_directshell_dev1",
