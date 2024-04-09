@@ -120,6 +120,7 @@ function MainEntry {
     }
     
     Set-IxpDownloadCache $cachePath
+    net use \\ntdev\release
     New-TestMachine `
         -Name $vmName `
         -MachineName $vmName `
