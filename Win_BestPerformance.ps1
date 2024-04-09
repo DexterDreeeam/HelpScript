@@ -1,3 +1,4 @@
+Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 Set-StrictMode -Version 2
 
 ####################

@@ -1,3 +1,5 @@
+Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+
 # query
 # Get-AppxPackage -AllUsers | Select-Object -ExpandProperty Name
 

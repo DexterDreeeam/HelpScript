@@ -1,3 +1,5 @@
+Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+
 function MainEntry {
     $options = @("Git with VFS", "Latest Git")
     Write-Host "Choose an option:"
