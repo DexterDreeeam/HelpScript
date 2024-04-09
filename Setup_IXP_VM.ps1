@@ -84,7 +84,7 @@ function MainEntry {
 
     $vmNames = Get-VM | Select-Object -ExpandProperty Name
     for ($i = 0; $i -lt 100; $i++) {
-        $prefix = "vm$i-"
+        $prefix = "vm$i-*"
         $vmsWithPrefix = $vmNames -like $prefix
         if ($vmsWithPrefix) {
             Write-Warning "VM Prefix [$prefix] exists"
