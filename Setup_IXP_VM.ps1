@@ -2,16 +2,16 @@ Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 $branchDefault = "ni_current_directshell_dev1"
 $branches = @(
+    "ni_current_directshell",
     "ni_current_directshell_dev1",
-    "ni_current_directshell_dev2",
-    "ni_current_directshell_dev3",
     "rs_we_sigx_dev1",
-    "vb_release_svc_cfedge",
+    "vb_current_reach",
+    "vb_current_reach_dev2",
     "vb_release_svc_cfewebxt",
     "main"
 )
 
-$flavorDefault = "ProfDesktop"
+$flavorDefault = "Desktop"
 $flavors = @(
     "CloudEdition",
     "ClientCore",
