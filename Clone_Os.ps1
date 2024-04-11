@@ -1,5 +1,15 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
+function LoadVars {
+    $_s = 
+    $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
+    $_global_vars = $_j | ConvertFrom-Json
+}
+
+function Vars ($key) {
+    
+}
+
 function MainEntry {
     # enable long file path
     git config --system core.longpaths true
@@ -10,39 +20,36 @@ function MainEntry {
     $dst = $args[0]
     $dstDefault = ""
     $repoCacheServer = $null
-    $vfsendpoint = "https://osgvfsserver.corp.microsoft.com"
-    $os2020entry = "0d54b6ef" + "-" + "7283" + "-" + "444f" + "-" + "847a" + "-" + "343728d58a4d"
-    $osentry = "7bc5fd9f" + "-" + "6098" + "-" + "479a" + "-" + "a87e" + "-" + "1533d288d438"
+    $vfsendpoint = Vars("vfs_osgendpoint")
+    $os2020entry = Vars("osg_os2020_entry")
+    $osentry = Vars("osg_os_entry")
 
     while ($true) {
-        $options = @("os.2020", "os", "OSClient", "XS.SDX.Settings")
+        $options = Vars("os_repo_list")
         Write-Host "Choose an option:"
         for ($i=0; $i -lt $options.Count; $i++) {
             Write-Host "  $($i+1). $($options[$i])"
         }
-        $choice = Read-Host "Enter which Repo you want to clone"
-        if ($choice -eq "1") {
-            $repo = "https://microsoft.visualstudio.com/OS/_git/os.2020"
+        $choice = [int](Read-Host "Enter which Repo you want to clone")
+        if ($choice -eq 1) {
+            $repo = Vars("os2020_repo")
             $repoCacheServer = $vfsendpoint + "/" + $os2020entry
-            $dstDefault = "os.2020"
         }
-        elseif ($choice -eq "2") {
-            $repo = "https://microsoft.visualstudio.com/OS/_git/os"
+        elseif ($choice -eq 2) {
+            $repo = Vars("os_repo")
             $repoCacheServer = $vfsendpoint + "/" + $osentry
-            $dstDefault = "os"
         }
-        elseif ($choice -eq "3") {
-            $repo = "https://microsoft.visualstudio.com/DefaultCollection/OS/_git/OSClient"
-            $dstDefault = "OSClient"
+        elseif ($choice -eq 3) {
+            $repo = Vars("osc_repo")
         }
-        elseif ($choice -eq "4") {
-            $repo = "https://microsoft.visualstudio.com/DefaultCollection/Universal%20Store/_git/XS.SDX.Settings"
-            $dstDefault = "XS.SDX.Settings"
+        elseif ($choice -eq 4) {
+            $repo = Vars("xs_sdx_settings_repo")
         }
         else {
             continue
         }
 
+        $dstDefault = $options[$choice - 1]
         break
     }
 
