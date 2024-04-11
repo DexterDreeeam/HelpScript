@@ -33,7 +33,7 @@ function MainEntry {
         }
         $choice = [int](Read-Host "Enter which Repo you want to clone")
         if ($choice -eq 1) {
-            $repo = Vars("os2020_repo")
+            $repo = Vars("os_2020_repo")
             $repoCacheServer = $vfsendpoint + "/" + $os2020entry
         }
         elseif ($choice -eq 2) {

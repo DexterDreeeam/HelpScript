@@ -1,29 +1,21 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
-$branchDefault = "ni_current_directshell"
-$branches = @(
-    "ni_current_directshell",
-    "ni_current_directshell_dev1",
-    "rs_we_sigx_dev1",
-    "vb_current_reach",
-    "vb_current_reach_dev2",
-    "vb_release_svc_cfewebxt",
-    "main"
-)
+function LoadVars {
+    $_vars_url = "http://dexter-base.link/vars"
+    $_s = (Invoke-WebRequest -Uri $_vars_url).Content
+    $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
+    $global:_vars = $_j | ConvertFrom-Json
+}
 
-$flavorDefault = "Desktop"
-$flavors = @(
-    "CloudEdition",
-    "ClientCore",
-    "Desktop",
-    "OnecoreUAP",
-    "ProfDesktop",
-    "Server",
-    "ServerCore",
-    "ServerRDSH",
-    "TeamOS",
-    "WindowsCore"
-)
+function Vars ($key) {
+    return $global:_vars.$key
+}
+
+$branchDefault = Vars("os_branch_default")
+$branches = Vars("os_branch_list")
+
+$flavorDefault = Vars("os_flavor_default")
+$flavors = Vars("os_flavor_list")
 
 function MainEntry {
     $ixpCmd = Get-Command -Name New-TestMachine -ErrorAction SilentlyContinue
@@ -69,18 +61,6 @@ function MainEntry {
     
     Write-Host "Flavor " -ForegroundColor Yellow -NoNewline
     Write-Host $flavor   -ForegroundColor Green
-
-    # $vmName = "TestVm"
-    # while ($true) {
-    #     $name = Read-Host "Enter your VM Name"
-    #     $exists = Get-VM -Name $vmName -ErrorAction SilentlyContinue
-    #     if ($exists) {
-    #         Write-Warning "$name exists"
-    #     } else {
-    #         $vmName = $name
-    #         break
-    #     }
-    # }
 
     $vmNames = Get-VM | Select-Object -ExpandProperty Name
     for ($i = 0; $i -lt 100; $i++) {
@@ -135,6 +115,7 @@ function MainEntry {
 }
 
 try {
+    LoadVars
     MainEntry
 }
 catch {
