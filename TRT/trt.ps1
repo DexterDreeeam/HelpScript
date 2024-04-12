@@ -43,6 +43,7 @@ function MainEntry {
 
         Rename-Item -Path $binPath -NewName $trtZipPath
         Expand-Archive -Path $trtZipPath -DestinationPath $trtFolderPath
+        Start-Sleep -Seconds 3
     } else {
         Write-Host "Trt already exists."
     }
