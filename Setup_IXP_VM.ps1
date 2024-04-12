@@ -127,8 +127,7 @@ function MainEntry {
         Copy-VhdFromBuildShare `
             -Branch $branch `
             -Flavor $flavor `
-            -SavePath $vhdPath `
-            -Cache
+            -Cache $vhdPath
 
         Write-Host "Prepare your network environment to create VM"
         Read-Host "Press any button to select VHD path and create VM"
