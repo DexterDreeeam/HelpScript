@@ -124,10 +124,7 @@ function MainEntry {
     if ($choice -eq "Y" -or $choice -eq "y") {
         Write-Host "Prepare your network environment to download VHD"
         Read-Host  "Press any button to download VHD"
-        Copy-VhdFromBuildShare `
-            -Branch $branch `
-            -Flavor $flavor `
-            -Cache $vhdPath
+        Copy-VhdFromBuildShare -Branch $branch -Flavor $flavor
 
         Write-Host "Prepare your network environment to create VM"
         Read-Host "Press any button to select VHD path and create VM"
@@ -135,6 +132,7 @@ function MainEntry {
         $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
         $openFileDialog.Filter = "Virtual Hard Disk files (*.vhd;*.vhdx)|*.vhd;*.vhdx"
         $openFileDialog.Title = "Choose a VHD or VHDX file"
+        $openFileDialog.InitialDirectory = $cachePath
         $result = $openFileDialog.ShowDialog()
         if ($result -eq 'OK') {
             $selectedVhd = $openFileDialog.FileName
