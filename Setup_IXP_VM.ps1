@@ -1,3 +1,5 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 function LoadVars {
@@ -83,35 +85,89 @@ function MainEntry {
     $externalSwitch = Get-VMSwitch | Where-Object { $_.SwitchType -eq 'External' } | Select-Object -First 1
     if ([bool]$externalSwitch) {
         $switch = $externalSwitch.Name
-    } else {
+    }
+    else {
         $switch = "Default Switch"
     }
     
     Write-Host "Network Switch " -ForegroundColor Yellow -NoNewline
     Write-Host $switch           -ForegroundColor Green
     
-    $volumeD = Get-Volume -DriveLetter D -ErrorAction SilentlyContinue
-    if ($volumeD) {
-        $vhdPath = "d:\vhd\"
-        $cachePath = "d:\ixpCache\"
-    } else {
-        $vhdPath = "c:\vhd\"
-        $cachePath = "c:\ixpCache\"
+    $driveLetter = "C"
+    $drives = Get-PSDrive -PSProvider FileSystem
+    $i = 1
+    foreach ($drive in $drives) {
+        Write-Host "${i}: $($drive.Name)"
+        $i++
+    }
+    $choice = Read-Host "Select a drive to Cache VHD (1-$($drives.Count))"
+    $number = 0
+    $isNumeric = [int]::TryParse($choice, [ref]$number)
+    if ($isNumeric) {
+        $driveLetter = $drives[$number - 1].Name
+    }
+    else {
+        $driveLetter = "$choice"
     }
     
+    $vhdPath = "${driveLetter}:\vhd\"
+    $cachePath = "${driveLetter}:\ixpCache\"
+
+    Write-Host "VHD Cache Path " -ForegroundColor Yellow -NoNewline
+    Write-Host $vhdPath          -ForegroundColor Green
+    Write-Host "IXP Cache Path " -ForegroundColor Yellow -NoNewline
+    Write-Host $cachePath        -ForegroundColor Green
+
     Set-IxpDownloadCache $cachePath
-    net use \\ntdev\release
-    New-TestMachine `
-        -Name $vmName `
-        -MachineName $vmName `
-        -VirtualSwitchName $switch `
-        -KdSetupMode Disable `
-        -VmNumProcessors 8 `
-        -VmMemInGb 8 `
-        -Branch $branch `
-        -Flavor $flavor `
-        -SavePath $vhdPath `
-        -Cache
+
+    $choice = Read-Host "Need [Download VHD] and [Create VM] in 2 different network? (Y/N, default N)"
+    if ($choice -eq "Y" -or $choice -eq "y") {
+        Write-Host "Prepare your network environment to download VHD"
+        Read-Host  "Press any button to download VHD"
+        Copy-VhdFromBuildShare `
+            -Branch $branch `
+            -Flavor $flavor `
+            -SavePath $vhdPath `
+            -Cache
+
+        Write-Host "Prepare your network environment to create VM"
+        Read-Host "Press any button to select VHD path and create VM"
+
+        $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+        $openFileDialog.Filter = "Virtual Hard Disk files (*.vhd;*.vhdx)|*.vhd;*.vhdx"
+        $openFileDialog.Title = "Choose a VHD or VHDX file"
+        $result = $openFileDialog.ShowDialog()
+        if ($result -eq 'OK') {
+            $selectedVhd = $openFileDialog.FileName
+            Write-Output "Selected VHD: $selectedVhd"
+        }
+        else {
+            exit 1
+        }
+
+        New-TestMachine `
+            -Name $vmName `
+            -MachineName $vmName `
+            -VirtualSwitchName $switch `
+            -KdSetupMode Disable `
+            -VmNumProcessors 8 `
+            -VmMemInGb 8 `
+            -VhdSource $selectedVhd
+    }
+    else {
+        net use \\ntdev\release
+        New-TestMachine `
+            -Name $vmName `
+            -MachineName $vmName `
+            -VirtualSwitchName $switch `
+            -KdSetupMode Disable `
+            -VmNumProcessors 8 `
+            -VmMemInGb 8 `
+            -Branch $branch `
+            -Flavor $flavor `
+            -SavePath $vhdPath `
+            -Cache
+    }
 }
 
 try {
