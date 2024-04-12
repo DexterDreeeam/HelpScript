@@ -100,13 +100,13 @@ function MainEntry {
         Write-Host "${i}: $($drive.Name)"
         $i++
     }
-    $choice = Read-Host "Select a drive to Cache VHD (1-$($drives.Count))"
+    $choice = Read-Host "Select a drive to Cache VHD (default: [C])"
     $number = 0
     $isNumeric = [int]::TryParse($choice, [ref]$number)
     if ($isNumeric) {
         $driveLetter = $drives[$number - 1].Name
     }
-    else {
+    elseif (![string]::IsNullOrEmpty($choice)) {
         $driveLetter = "$choice"
     }
     
