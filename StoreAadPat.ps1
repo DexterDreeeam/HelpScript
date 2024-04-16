@@ -30,7 +30,7 @@ function MainEntry {
     elseif ($choice -eq "N" -or $choice -eq "n") {
         $targets | ForEach-Object {
             Remove-StoredCredential `
-                -Target $_ `
+                -Target $_
         }
     }
 }
