@@ -12,7 +12,7 @@ function Vars ($key) {
 }
 
 function MainEntry {
-    reasearchUrl = Vars("research_installer_url")
+    $reasearchUrl = Vars("research_installer_url")
     $vsixName = Vars("research_installer_name")
     $vsixPath = Join-Path -Path $pwd -ChildPath $vsixName
     Invoke-WebRequest -Uri $reasearchUrl -OutFile $vsixPath
