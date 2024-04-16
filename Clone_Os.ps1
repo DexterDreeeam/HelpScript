@@ -59,6 +59,9 @@ function MainEntry {
     }
 
     $dstPath = Join-Path -Path $pwd -ChildPath $dst
+    Write-Host "Clone Path: " -ForegroundColor Yellow -NoNewline
+    Write-Host $dst           -ForegroundColor Green
+
     if (Test-Path -Path $dstPath -PathType Container) {
         $choice = Read-Host "$dstPath exists. Delete? (Y/N)"
         if ($choice -eq "Y" -or $choice -eq "y") {
