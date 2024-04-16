@@ -67,8 +67,11 @@ function MainEntry {
     for ($i=0; $i -lt $options.Count; $i++) {
         Write-Host "  $($i+1). $($options[$i])"
     }
-    $choice = Read-Host "Enter your operation"
+    $choice = Read-Host "Enter your operation (default: Direct Raz)"
     
+    if ([string]::IsNullOrEmpty($choice)) {
+        DirectRazzle
+    }
     if ($choice -eq "1") {
         DirectRazzle
     }

@@ -12,16 +12,26 @@ function Vars ($key) {
 }
 
 function MainEntry {
-    $Pat = Read-Host -Prompt "Enter AAD PAT"
     Install-Module CredentialManager -Force -Repository PSGallery
 
-    $targets = Vars("aad_pat_target_list")    
-    $targets | ForEach-Object {
-        New-StoredCredential `
-            -Target $_ `
-            -UserName "PAT" `
-            -Password $Pat `
-            -Persist LOCALMACHINE
+    $targets = Vars("aad_pat_target_list")
+
+    $choice = Read-Host "To Add or Remove your AAD Credential Provider? (Y/N)"
+    if ($choice -eq "Y" -or $choice -eq "y") {
+        $Pat = Read-Host -Prompt "Enter AAD PAT"
+        $targets | ForEach-Object {
+            New-StoredCredential `
+                -Target $_ `
+                -UserName "PAT" `
+                -Password $Pat `
+                -Persist LOCALMACHINE
+        }
+    }
+    elseif ($choice -eq "N" -or $choice -eq "n") {
+        $targets | ForEach-Object {
+            Remove-StoredCredential `
+                -Target $_ `
+        }
     }
 }
 
