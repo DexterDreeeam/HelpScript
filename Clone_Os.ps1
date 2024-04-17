@@ -18,7 +18,7 @@ function MainEntry {
         -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `
         -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
 
-    $dst = $args[0]
+    $dst = ""
     $dstDefault = ""
     $repoCacheServer = $null
     $vfsendpoint = Vars("vfs_osgendpoint")
@@ -54,6 +54,7 @@ function MainEntry {
         break
     }
 
+    $dst = Read-Host "Enter your local repo name (default: $dstDefault)"
     if ([string]::IsNullOrWhiteSpace($dst)) {
         $dst = $dstDefault
     }
