@@ -2,6 +2,7 @@ Add-Type -AssemblyName System.Windows.Forms
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 function GetRazzleParameters {
+    Write-Output "There is a dialog windows, select your os folder..."
     $folderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
     $folderBrowser.Description = "Select os.2020 folder"
     $folderBrowser.RootFolder = "MyComputer"
