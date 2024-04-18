@@ -13,18 +13,18 @@ function Vars ($key) {
     return $global:_vars.$key
 }
 
-$branchDefault = Vars("os_branch_default")
-$branches = Vars("os_branch_list")
-
-$flavorDefault = Vars("os_flavor_default")
-$flavors = Vars("os_flavor_list")
-
 function MainEntry {
     $ixpCmd = Get-Command -Name New-TestMachine -ErrorAction SilentlyContinue
     if (-not $ixpCmd) {
         Write-Error "IXP is not installed"
         exit 1
     }
+
+    $branchDefault = Vars("os_branch_default")
+    $branches = Vars("os_branch_list")
+
+    $flavorDefault = Vars("os_flavor_default")
+    $flavors = Vars("os_flavor_list")
 
     Write-Host "Choose an option:"
     for ($i=0; $i -lt $branches.Count; $i++) {
