@@ -132,7 +132,7 @@ function MainEntry {
         $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
         $openFileDialog.Filter = "Virtual Hard Disk files (*.vhd;*.vhdx)|*.vhd;*.vhdx"
         $openFileDialog.Title = "Choose a VHD or VHDX file"
-        $openFileDialog.InitialDirectory = $cachePath
+        $openFileDialog.InitialDirectory = $cachePath + "vhd\"
         $result = $openFileDialog.ShowDialog()
         if ($result -eq 'OK') {
             $selectedVhd = $openFileDialog.FileName
@@ -141,6 +141,9 @@ function MainEntry {
         else {
             exit 1
         }
+
+        Write-Host "Selected VHD " -ForegroundColor Yellow -NoNewline
+        Write-Host $selectedVhd    -ForegroundColor Green
 
         New-TestMachine `
             -Name $vmName `
