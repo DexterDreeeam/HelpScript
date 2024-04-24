@@ -154,8 +154,7 @@ function MainEntry {
             -VmMemInGb 8 `
             -VhdSource $selectedVhd `
             -AllowOffline `
-            -NoNestedVirtualization `
-            -NoTShell
+            -NoNestedVirtualization
     }
     else {
         net use \\ntdev\release
