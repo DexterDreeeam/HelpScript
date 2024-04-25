@@ -16,7 +16,7 @@ function MainEntry {
     compact.exe /C /S:"C:\Symbols"
     setx /m DBGHELP_HOMEDIR C:\Symbols # symbol tree location
     setx /m _NT_SOURCE_PATH SRV*C:\Symbols\Src # source code download location
-    setx /m _NT_SYMBOL_PATH SRV*C:\Symbols\Sym*https://msdl.microsoft.com/download/symbols # symbol file source
+    setx /m _NT_SYMBOL_PATH SRV*C:\Symbols\Sym*http://idcsymproxy.fareast.corp.microsoft.com/symbols*http://symweb*http://msdl.microsoft.com/download/symbols # symbol file source
     setx /m _NT_SYMCACHE_PATH SRV*C:\Symbols\SymCache # WPA symbol cache location
     
     # Setup Dump register handler
