@@ -120,6 +120,20 @@ function MainEntry {
 
     Set-IxpDownloadCache $cachePath
 
+    $params = @{
+        Name                   = $vmName
+        MachineName            = $vmName
+        VirtualSwitchName      = $switch
+        KdSetupMode            = "Disable"
+        VmNumProcessors        = 8
+        VmMemInGb              = 8
+    }
+
+    $choice = Read-Host "Skip OOBE? (Y/N, default: Y)"
+    if ($choice -eq "N" -or $choice -eq "n") {
+        $params["NoUnattend"] = $true
+    }
+
     $choice = Read-Host "Need [Download VHD] and [Create VM] in 2 different network? (Y/N, default N)"
     if ($choice -eq "Y" -or $choice -eq "y") {
         Write-Host "Prepare your network environment to download VHD"
@@ -145,31 +159,20 @@ function MainEntry {
         Write-Host "Selected VHD " -ForegroundColor Yellow -NoNewline
         Write-Host $selectedVhd    -ForegroundColor Green
 
-        New-TestMachine `
-            -Name $vmName `
-            -MachineName $vmName `
-            -VirtualSwitchName $switch `
-            -KdSetupMode Disable `
-            -VmNumProcessors 8 `
-            -VmMemInGb 8 `
-            -VhdSource $selectedVhd `
-            -AllowOffline `
-            -NoNestedVirtualization
+        $params["VhdSource"] = $selectedVhd
+        $params["AllowOffline"] = $true
+        $params["NoNestedVirtualization"] = $true
     }
     else {
         net use \\ntdev\release
-        New-TestMachine `
-            -Name $vmName `
-            -MachineName $vmName `
-            -VirtualSwitchName $switch `
-            -KdSetupMode Disable `
-            -VmNumProcessors 8 `
-            -VmMemInGb 8 `
-            -Branch $branch `
-            -Flavor $flavor `
-            -SavePath $vhdPath `
-            -Cache
+
+        $params["Branch"] = $branch
+        $params["Flavor"] = $flavor
+        $params["SavePath"] = $vhdPath
+        $params["Cache"] = $true
     }
+
+    New-TestMachine @params
 }
 
 try {
