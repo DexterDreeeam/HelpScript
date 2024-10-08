@@ -71,10 +71,14 @@ function MainEntry {
         if ($vmsWithPrefix) {
             Write-Warning "VM Prefix [$prefix] exists"
         } else {
-            $length = 8
-            $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            $randomStr = -join ((Get-Random -Count $length -InputObject $chars.ToCharArray()))
-            $vmName = $prefix + $randomStr
+            # $length = 8
+            # $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            # $randomStr = -join ((Get-Random -Count $length -InputObject $chars.ToCharArray()))
+            # $vmName = $prefix + $randomStr
+            # break
+
+            $suffix = Read-Host "New VM Name: vm$i-"
+            $vmName = "vm$i-" + $suffix
             break
         }
     }
