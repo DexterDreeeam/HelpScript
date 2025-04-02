@@ -1,7 +1,7 @@
 Set-ExecutionPolicy RemoteSigned -Scope Process -Force
 
 function LoadVars {
-    $_vars_url = "http://-base.link/vars"
+    $_vars_url = "https://raw.githubusercontent.com/dexterdreeeam/HelpScript/main/vars.txt"
     $_s = (Invoke-WebRequest -Uri $_vars_url).Content
     $_j = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_s))
     $global:_vars = $_j | ConvertFrom-Json
