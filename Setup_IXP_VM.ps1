@@ -131,7 +131,7 @@ function MainEntry {
         KdSetupMode            = "Disable"
         VmNumProcessors        = 8
         VmMemInGb              = 8
-        Tool                   = "TVPP, BuildShareTools"
+        Tool                   = "TVPP,BuildShareTools"
     }
 
     $choice = Read-Host "Skip OOBE? (Y/N, default: Y)"
